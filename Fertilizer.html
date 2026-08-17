@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Fertilizer Advisory - Smart Agriculture</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #eef8ef;
+      color: #173b24;
+    }
+
+    .app {
+      max-width: 500px;
+      margin: auto;
+      min-height: 100vh;
+      padding-bottom: 30px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #087b35, #20a34a);
+      color: white;
+      padding: 20px;
+      border-radius: 0 0 28px 28px;
+    }
+
+    .back {
+      background: rgba(255,255,255,.2);
+      border: 1px solid white;
+      color: white;
+      padding: 9px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    header h1 {
+      margin-top: 20px;
+      font-size: 25px;
+    }
+
+    header p {
+      margin-top: 7px;
+    }
+
+    .content {
+      padding: 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    .card h2 {
+      color: #087b35;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #657168;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .question {
+      text-align: center;
+      font-size: 19px;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+
+    .option-container {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+    }
+
+    .option-btn {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid #d7e9da;
+      border-radius: 12px;
+      background: #f8fcf9;
+      color: #173b24;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .option-btn:hover {
+      border-color: #087b35;
+      background: #eef8ef;
+    }
+
+    .option-btn.selected {
+      border-color: #087b35;
+      background: #e6f6e9;
+      color: #087b35;
+    }
+
+    .option-description {
+      display: block;
+      margin-top: 5px;
+      font-size: 12px;
+      font-weight: normal;
+      color: #657168;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 15px 0 7px;
+    }
+
+    select,
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: white;
+      font-size: 16px;
+    }
+
+    .unit {
+      color: #68756c;
+      font-size: 12px;
+      margin-top: 5px;
+      line-height: 1.4;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      background: #087b35;
+      color: white;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 11px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .secondary-btn {
+      width: 100%;
+      border: 2px solid #087b35;
+      background: white;
+      color: #087b35;
+      padding: 13px;
+      margin-top: 10px;
+      border-radius: 11px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .info-box {
+      background: #e9f6ec;
+      padding: 14px;
+      border-radius: 12px;
+      margin-top: 15px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .info-box strong {
+      color: #087b35;
+    }
+
+    .warning {
+      background: #fff7dc;
+      color: #6b5900;
+      padding: 14px;
+      border-radius: 10px;
+      margin-top: 15px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    #result {
+      display: none;
+    }
+
+    .result-icon {
+      text-align: center;
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .result-title {
+      text-align: center;
+      color: #087b35;
+      font-size: 23px;
+    }
+
+    .status {
+      margin-top: 15px;
+      padding: 13px;
+      border-radius: 10px;
+      background: #e7f6ea;
+      color: #087b35;
+      text-align: center;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+
+    .nutrient {
+      padding: 15px;
+      margin-top: 12px;
+      border-radius: 12px;
+      background: #f5faf6;
+      border-left: 5px solid #087b35;
+    }
+
+    .nutrient h3 {
+      color: #087b35;
+      margin-bottom: 6px;
+    }
+
+    .nutrient p {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .tips {
+      padding-left: 20px;
+      margin-top: 10px;
+      line-height: 1.8;
+      color: #59655d;
+      font-size: 14px;
+    }
+
+    .home-btn {
+      display: block;
+      margin: 20px auto;
+      border: none;
+      background: transparent;
+      color: #087b35;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .small-title {
+      margin-top: 18px;
+      color: #087b35;
+      font-size: 17px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+
+  <header>
+
+    <button class="back" onclick="goHome()">
+      ← Back
+    </button>
+
+    <h1>🌾 Fertilizer Advisory</h1>
+
+    <p>
+      Get fertilizer and nutrient-management guidance.
+    </p>
+
+  </header>
+
+
+  <main class="content">
+
+
+    <!-- INTRO -->
+
+    <div class="card">
+
+      <h2>🌱 Before We Start</h2>
+
+      <p>
+        Do you have a soil-test report from a laboratory?
+      </p>
+
+      <div class="info-box">
+
+        <strong>Why is soil testing important?</strong>
+
+        <br><br>
+
+        Nitrogen (N), phosphorus (P), potassium (K),
+        calcium (Ca), soil pH and other properties cannot
+        be reliably determined just by looking at the soil.
+
+      </div>
+
+    </div>
+
+
+    <!-- SOIL TEST QUESTION -->
+
+    <div class="card">
+
+      <div class="question">
+        Do you know your soil-test values?
+      </div>
+
+      <div class="option-container">
+
+        <button
+          class="option-btn"
+          id="yesBtn"
+          onclick="chooseSoilTest('yes')">
+
+          ✅ I know my soil test
+
+          <span class="option-description">
+            I have a laboratory soil-test report.
+          </span>
+
+        </button>
+
+
+        <button
+          class="option-btn"
+          id="noBtn"
+          onclick="chooseSoilTest('no')">
+
+          ❓ I don't know
+
+          <span class="option-description">
+            I don't have a soil-test report.
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- COMMON FARM INFORMATION -->
+
+    <div class="card section" id="farmSection">
+
+      <h2>🌱 Farm Information</h2>
+
+
+      <label for="crop">
+        Crop
+      </label>
+
+      <select id="crop">
+
+        <option value="">
+          Select crop
+        </option>
+
+        <option value="paddy">
+          Paddy / Rice
+        </option>
+
+        <option value="wheat">
+          Wheat
+        </option>
+
+        <option value="maize">
+          Maize
+        </option>
+
+        <option value="cotton">
+          Cotton
+        </option>
+
+        <option value="groundnut">
+          Groundnut
+        </option>
+
+        <option value="chickpea">
+          Chickpea
+        </option>
+
+        <option value="vegetables">
+          Vegetables
+        </option>
+
+      </select>
+
+
+      <label for="soil">
+        🪨 Soil Type
+      </label>
+
+      <select id="soil">
+
+        <option value="">
+          Select soil type
+        </option>
+
+        <option value="sandy">
+          Sandy
+        </option>
+
+        <option value="loamy">
+          Loamy
+        </option>
+
+        <option value="clay">
+          Clay
+        </option>
+
+        <option value="black">
+          Black
+        </option>
+
+        <option value="red">
+          Red
+        </option>
+
+      </select>
+
+
+      <label for="stage">
+        🌱 Crop Stage
+      </label>
+
+      <select id="stage">
+
+        <option value="">
+          Select crop stage
+        </option>
+
+        <option value="before">
+          Before Planting
+        </option>
+
+        <option value="early">
+          Early Growth
+        </option>
+
+        <option value="vegetative">
+          Vegetative Growth
+        </option>
+
+        <option value="flowering">
+          Flowering
+        </option>
+
+        <option value="fruiting">
+          Fruiting / Grain Filling
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- SOIL TEST SECTION -->
+
+    <div class="card section" id="testSection">
+
+      <h2>📋 Soil Test Report</h2>
+
+      <p>
+        Enter the values exactly as shown on your
+        laboratory soil-test report.
+      </p>
+
+
+      <label for="nitrogen">
+        N — Nitrogen
+      </label>
+
+      <input
+        type="number"
+        id="nitrogen"
+        min="0"
+        step="0.01"
+        placeholder="Example: 25"
+      >
+
+
+      <label for="phosphorus">
+        P — Phosphorus
+      </label>
+
+      <input
+        type="number"
+        id="phosphorus"
+        min="0"
+        step="0.01"
+        placeholder="Example: 15"
+      >
+
+
+      <label for="potassium">
+        K — Potassium
+      </label>
+
+      <input
+        type="number"
+        id="potassium"
+        min="0"
+        step="0.01"
+        placeholder="Example: 120"
+      >
+
+
+      <label for="calcium">
+        Ca — Calcium
+      </label>
+
+      <input
+        type="number"
+        id="calcium"
+        min="0"
+        step="0.01"
+        placeholder="Optional"
+      >
+
+
+      <label for="ph">
+        pH
+      </label>
+
+      <input
+        type="number"
+        id="ph"
+        min="0"
+        max="14"
+        step="0.01"
+        placeholder="Example: 6.8"
+      >
+
+
+      <label for="unit">
+        Soil-test unit
+      </label>
+
+      <select id="unit">
+
+        <option value="">
+          Select unit if known
+        </option>
+
+        <option value="ppm">
+          ppm / mg/kg
+        </option>
+
+        <option value="kg">
+          kg/ha
+        </option>
+
+        <option value="other">
+          Other / Laboratory specified
+        </option>
+
+      </select>
+
+
+      <div class="warning">
+
+        ⚠️ Different laboratories may use different
+        extraction methods, units and rating classes.
+        Do not compare values from different reports
+        without checking the laboratory's reference range.
+
+      </div>
+
+
+      <button
+        class="btn"
+        onclick="soilTestAdvice()">
+
+        🌾 Analyze Soil Report
+
+      </button>
+
+    </div>
+
+
+    <!-- NO TEST SECTION -->
+
+    <div class="card section" id="noTestSection">
+
+      <h2>❓ No Soil Test?</h2>
+
+      <p>
+        That's okay. You can still get general fertilizer
+        guidance based on your crop and soil type.
+      </p>
+
+
+      <div class="info-box">
+
+        <strong>Important:</strong>
+
+        <br><br>
+
+        Without a soil test, the app cannot reliably tell
+        you whether your field is deficient in phosphorus,
+        potassium, calcium or other nutrients.
+
+      </div>
+
+
+      <h3 class="small-title">
+        🧪 Recommended next step
+      </h3>
+
+      <p style="margin-top:8px;">
+        Take a representative soil sample to a soil-testing
+        laboratory or agricultural extension service.
+        Keep the report and enter its values into this app
+        later.
+      </p>
+
+
+      <button
+        class="btn"
+        onclick="basicAdvice()">
+
+        🌱 Give Me Basic Guidance
+
+      </button>
+
+
+      <button
+        class="secondary-btn"
+        onclick="soilTestingInfo()">
+
+        🧪 How to Get Soil Tested
+
+      </button>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div class="card" id="result">
+
+      <div class="result-icon">
+        🌾
+      </div>
+
+      <h2 class="result-title">
+        Fertilizer Advisory
+      </h2>
+
+
+      <div class="status" id="status">
+      </div>
+
+
+      <div class="nutrient">
+
+        <h3>
+          🟢 Nitrogen — N
+        </h3>
+
+        <p id="nAdvice"></p>
+
+      </div>
+
+
+      <div class="nutrient">
+
+        <h3>
+          🔵 Phosphorus — P
+        </h3>
+
+        <p id="pAdvice"></p>
+
+      </div>
+
+
+      <div class="nutrient">
+
+        <h3>
+          🟠 Potassium — K
+        </h3>
+
+        <p id="kAdvice"></p>
+
+      </div>
+
+
+      <div class="nutrient">
+
+        <h3>
+          ⚪ Calcium — Ca
+        </h3>
+
+        <p id="caAdvice"></p>
+
+      </div>
+
+
+      <div class="nutrient">
+
+        <h3>
+          🌱 General Management
+        </h3>
+
+        <ul
+          class="tips"
+          id="tips">
+        </ul>
+
+      </div>
+
+
+      <div class="warning">
+
+        ⚠️ This app does not replace a soil laboratory
+        recommendation. Do not use these results to
+        calculate an exact fertilizer quantity.
+
+        <br><br>
+
+        For exact fertilizer rates, use your soil-test
+        report together with the crop, variety, target
+        yield and recommendations from your local
+        agricultural authority.
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="home-btn"
+      onclick="goHome()">
+
+      🏠 Back to Home
+
+    </button>
+
+  </main>
+
+</div>
+
+
+<script>
+
+let soilTestKnown = "";
+
+
+/* --------------------------------
+   SOIL TEST OPTION
+-------------------------------- */
+
+function chooseSoilTest(option) {
+
+  soilTestKnown = option;
+
+
+  const yesBtn =
+    document.getElementById("yesBtn");
+
+  const noBtn =
+    document.getElementById("noBtn");
+
+
+  yesBtn.classList.remove("selected");
+
+  noBtn.classList.remove("selected");
+
+
+  if (option === "yes") {
+
+    yesBtn.classList.add("selected");
+
+    document
+      .getElementById("farmSection")
+      .classList.add("active");
+
+    document
+      .getElementById("testSection")
+      .classList.add("active");
+
+    document
+      .getElementById("noTestSection")
+      .classList.remove("active");
+
+  }
+
+
+  if (option === "no") {
+
+    noBtn.classList.add("selected");
+
+    document
+      .getElementById("farmSection")
+      .classList.add("active");
+
+    document
+      .getElementById("testSection")
+      .classList.remove("active");
+
+    document
+      .getElementById("noTestSection")
+      .classList.add("active");
+
+  }
+
+}
+
+
+/* --------------------------------
+   VALIDATE FARM INFORMATION
+-------------------------------- */
+
+function getFarmData() {
+
+  const crop =
+    document.getElementById("crop").value;
+
+  const soil =
+    document.getElementById("soil").value;
+
+  const stage =
+    document.getElementById("stage").value;
+
+
+  if (!crop || !soil || !stage) {
+
+    alert(
+      "Please select crop, soil type and crop stage."
+    );
+
+    return null;
+  }
+
+
+  return {
+    crop: crop,
+    soil: soil,
+    stage: stage
+  };
+
+}
+
+
+/* --------------------------------
+   SOIL TEST ADVICE
+-------------------------------- */
+
+function soilTestAdvice() {
+
+  const farm =
+    getFarmData();
+
+
+  if (!farm) {
+    return;
+  }
+
+
+  const n =
+    parseFloat(
+      document.getElementById("nitrogen").value
+    );
+
+  const p =
+    parseFloat(
+      document.getElementById("phosphorus").value
+    );
+
+  const k =
+    parseFloat(
+      document.getElementById("potassium").value
+    );
+
+  const caValue =
+    document.getElementById("calcium").value;
+
+  const phValue =
+    document.getElementById("ph").value;
+
+  const unit =
+    document.getElementById("unit").value;
+
+
+  if (
+    isNaN(n) ||
+    isNaN(p) ||
+    isNaN(k)
+  ) {
+
+    alert(
+      "Please enter N, P and K values from your soil report."
+    );
+
+    return;
+  }
+
+
+  if (!unit) {
+
+    alert(
+      "Please select the soil-test unit if it is shown on your report."
+    );
+
+    return;
+  }
+
+
+  /*
+    IMPORTANT:
+    The ranges below are NOT universal soil-test
+    standards. They are intentionally not used to
+    calculate fertilizer quantities.
+  */
+
+  let nAdvice = "";
+  let pAdvice = "";
+  let kAdvice = "";
+  let caAdvice = "";
+
+  let tips = [];
+
+
+  nAdvice =
+    "Your report shows N = " + n +
+    ". Use the laboratory's rating (low, medium or high) " +
+    "and the crop-specific recommendation to determine " +
+    "whether additional nitrogen is needed. Do not infer " +
+    "an exact fertilizer rate from this app alone.";
+
+
+  pAdvice =
+    "Your report shows P = " + p +
+    ". Use the laboratory's phosphorus rating and local " +
+    "crop recommendation before applying phosphorus fertilizer.";
+
+
+  kAdvice =
+    "Your report shows K = " + k +
+    ". Use the laboratory's potassium rating and local " +
+    "crop recommendation before applying potassium fertilizer.";
+
+
+  if (caValue !== "") {
+
+    caAdvice =
+      "Your report shows Ca = " +
+      caValue +
+      ". Check the laboratory's calcium rating and soil pH " +
+      "before deciding whether any calcium-containing amendment is needed.";
+
+  } else {
+
+    caAdvice =
+      "Calcium value was not entered. If calcium is included " +
+      "in your laboratory report, enter it for a more complete record.";
+
+  }
+
+
+  if (phValue !== "") {
+
+    tips.push(
+      "Soil pH reported by the laboratory: " +
+      phValue +
+      ". Use the laboratory's interpretation for your crop."
+    );
+
+  }
+
+
+  tips.push(
+    "Keep the original soil-test report for future reference."
+  );
+
+
+  tips.push(
+    "Use the same units and laboratory interpretation shown on the report."
+  );
+
+
+  tips.push(
+    "Consider crop variety, target yield, previous crop and manure/compost applications."
+  );
+
+
+  tips.push(
+    "Split nutrient applications when recommended for the crop and local conditions."
+  );
+
+
+  tips.push(
+    "Avoid applying nutrients simply because the crop looks weak; nutrient deficiency should be diagnosed properly."
+  );
+
+
+  showResult(
+    "📋 Soil-test information recorded. Use the laboratory rating and local crop recommendation for actual fertilizer decisions.",
+    nAdvice,
+    pAdvice,
+    kAdvice,
+    caAdvice,
+    tips
+  );
+
+}
+
+
+/* --------------------------------
+   BASIC ADVICE WITHOUT SOIL TEST
+-------------------------------- */
+
+function basicAdvice() {
+
+  const farm =
+    getFarmData();
+
+
+  if (!farm) {
+    return;
+  }
+
+
+  let nAdvice = "";
+  let pAdvice = "";
+  let kAdvice = "";
+  let caAdvice = "";
+
+  let tips = [];
+
+
+  nAdvice =
+    "Nitrogen status cannot be determined reliably without a soil test. " +
+    "Follow the crop-specific local fertilizer recommendation rather than guessing the amount.";
+
+
+  pAdvice =
+    "Phosphorus status cannot be determined reliably without a soil test. " +
+    "Avoid applying phosphorus simply because the soil looks poor.";
+
+
+  kAdvice =
+    "Potassium status cannot be determined reliably without a soil test. " +
+    "Use local recommendations and consider getting the soil tested.";
+
+
+  caAdvice =
+    "Calcium status cannot be determined reliably by looking at the soil. " +
+    "Soil pH and laboratory testing can help determine whether calcium management is needed.";
+
+
+  /*
+    CROP GUIDANCE
+  */
+
+  if (farm.crop === "paddy") {
+
+    tips.push(
+      "For rice, follow your local recommended nutrient schedule and avoid unnecessary fertilizer applications."
+    );
+
+  }
+
+
+  if (farm.crop === "wheat") {
+
+    tips.push(
+      "For wheat, use local crop recommendations and apply nitrogen according to recommended growth stages."
+    );
+
+  }
+
+
+  if (farm.crop === "maize") {
+
+    tips.push(
+      "For maize, use crop-stage-based nutrient management according to local recommendations."
+    );
+
+  }
+
+
+  if (farm.crop === "cotton") {
+
+    tips.push(
+      "For cotton, avoid excessive nitrogen and follow local recommendations."
+    );
+
+  }
+
+
+  if (
+    farm.crop === "groundnut" ||
+    farm.crop === "chickpea"
+  ) {
+
+    tips.push(
+      "For pulses and groundnut, use crop-specific nutrient recommendations rather than a generic fertilizer program."
+    );
+
+  }
+
+
+  if (farm.crop === "vegetables") {
+
+    tips.push(
+      "Vegetable nutrient requirements vary widely by crop, so use crop-specific recommendations."
+    );
+
+  }
+
+
+  /*
+    SOIL GUIDANCE
+  */
+
+  if (farm.soil === "sandy") {
+
+    tips.push(
+      "Sandy soils can lose nutrients more readily, so careful nutrient and irrigation management is important."
+    );
+
+  }
+
+
+  if (
+    farm.soil === "clay" ||
+    farm.soil === "black"
+  ) {
+
+    tips.push(
+      "Heavy soils can retain nutrients and water; avoid unnecessary applications and waterlogging."
+    );
+
+  }
+
+
+  if (farm.soil === "loamy") {
+
+    tips.push(
+      "Maintain so
