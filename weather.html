@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Weather Advisory - Smart Agriculture</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#eef8ef;
+    color:#173b24;
+}
+
+.app{
+    max-width:500px;
+    margin:auto;
+    min-height:100vh;
+    padding-bottom:30px;
+}
+
+header{
+    background:linear-gradient(135deg,#087b35,#20a34a);
+    color:white;
+    padding:20px;
+    border-radius:0 0 28px 28px;
+}
+
+.back{
+    border:1px solid white;
+    background:rgba(255,255,255,.18);
+    color:white;
+    padding:9px 14px;
+    border-radius:9px;
+    font-size:15px;
+}
+
+header h1{
+    margin-top:20px;
+    font-size:25px;
+}
+
+header p{
+    margin-top:7px;
+}
+
+.content{
+    padding:18px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.card h2{
+    color:#087b35;
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin:12px 0 7px;
+}
+
+input,select{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
+    background:white;
+}
+
+.btn{
+    width:100%;
+    border:none;
+    background:#087b35;
+    color:white;
+    padding:15px;
+    margin-top:15px;
+    border-radius:11px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.gps{
+    background:#1769aa;
+}
+
+.secondary{
+    background:white;
+    color:#087b35;
+    border:2px solid #087b35;
+}
+
+.location{
+    text-align:center;
+    color:#087b35;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.current{
+    text-align:center;
+    padding:10px;
+}
+
+.weather-icon{
+    font-size:60px;
+    margin:10px;
+}
+
+.temperature{
+    font-size:48px;
+    font-weight:bold;
+    color:#087b35;
+}
+
+.condition{
+    font-size:18px;
+    color:#66716a;
+    margin-top:5px;
+}
+
+.details{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:18px;
+}
+
+.detail{
+    background:#f4faf5;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.detail-icon{
+    font-size:25px;
+}
+
+.detail strong{
+    display:block;
+    margin-top:6px;
+    color:#087b35;
+}
+
+.forecast{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+}
+
+.day{
+    min-width:105px;
+    background:#f4faf5;
+    padding:15px 10px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.day-name{
+    font-weight:bold;
+    color:#087b35;
+}
+
+.day-icon{
+    font-size:30px;
+    margin:8px;
+}
+
+.rain{
+    font-size:13px;
+    color:#3574a5;
+    margin-top:5px;
+}
+
+.advice{
+    background:#e8f6eb;
+    padding:16px;
+    border-radius:12px;
+    line-height:1.6;
+    font-size:14px;
+}
+
+.loading{
+    text-align:center;
+    padding:20px;
+}
+
+.error{
+    display:none;
+    background:#ffe9e9;
+    color:#9b2020;
+    padding:14px;
+    border-radius:10px;
+    margin-top:12px;
+    line-height:1.5;
+}
+
+.success{
+    display:none;
+    background:#e5f7e9;
+    color:#087b35;
+    padding:14px;
+    border-radius:10px;
+    margin-top:12px;
+    line-height:1.5;
+}
+
+.home-btn{
+    display:block;
+    margin:20px auto;
+    border:none;
+    background:transparent;
+    color:#087b35;
+    font-weight:bold;
+    font-size:15px;
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+<header>
+
+<button class="back" onclick="goHome()">
+← Back
+</button>
+
+<h1>🌦️ Weather Advisory</h1>
+
+<p>Weather information for your farm</p>
+
+</header>
+
+
+<main class="content">
+
+
+<!-- FARM LOCATION -->
+
+<div class="card">
+
+<h2>📍 Farm Location</h2>
+
+<label for="village">
+Village
+</label>
+
+<input
+    id="village"
+    type="text"
+    placeholder="Enter village name">
+
+
+<label for="district">
+District
+</label>
+
+<input
+    id="district"
+    type="text"
+    placeholder="Enter district name">
+
+
+<label for="state">
+State
+</label>
+
+<input
+    id="state"
+    type="text"
+    placeholder="Enter state name">
+
+
+<button
+    class="btn"
+    onclick="searchByAddress()">
+
+🔍 Find Weather
+
+</button>
+
+
+<button
+    class="btn gps"
+    onclick="useGPS()">
+
+📍 Use My GPS Location
+
+</button>
+
+
+<button
+    class="btn secondary"
+    onclick="clearLocation()">
+
+✕ Clear
+
+</button>
+
+
+<div id="error" class="error"></div>
+
+<div id="success" class="success"></div>
+
+</div>
+
+
+<!-- LOADING -->
+
+<div
+    id="loading"
+    class="card"
+    style="display:none;">
+
+<div class="loading">
+🌦️ Getting weather information...
+</div>
+
+</div>
+
+
+<!-- CURRENT WEATHER -->
+
+<div
+    id="weatherCard"
+    class="card"
+    style="display:none;">
+
+<div
+    id="locationName"
+    class="location">
+</div>
+
+
+<div class="current">
+
+<div
+    id="weatherIcon"
+    class="weather-icon">
+🌤️
+</div>
+
+
+<div
+    id="temperature"
+    class="temperature">
+--°C
+</div>
+
+
+<div
+    id="condition"
+    class="condition">
+--
+</div>
+
+</div>
+
+
+<div class="details">
+
+
+<div class="detail">
+
+<div class="detail-icon">
+💧
+</div>
+
+Humidity
+
+<strong id="humidity">
+--%
+</strong>
+
+</div>
+
+
+<div class="detail">
+
+<div class="detail-icon">
+🌧️
+</div>
+
+Rain
+
+<strong id="rain">
+-- mm
+</strong>
+
+</div>
+
+
+<div class="detail">
+
+<div class="detail-icon">
+💨
+</div>
+
+Wind
+
+<strong id="wind">
+-- km/h
+</strong>
+
+</div>
+
+
+<div class="detail">
+
+<div class="detail-icon">
+🌡️
+</div>
+
+Feels Like
+
+<strong id="feels">
+--°C
+</strong>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- FARMING ADVICE -->
+
+<div
+    id="adviceCard"
+    class="card"
+    style="display:none;">
+
+<h2>🌾 Farming Advice</h2>
+
+<div
+    id="farmingAdvice"
+    class="advice">
+</div>
+
+</div>
+
+
+<!-- 7 DAY FORECAST -->
+
+<div
+    id="forecastCard"
+    class="card"
+    style="display:none;">
+
+<h2>📅 7-Day Forecast</h2>
+
+<div
+    id="forecast"
+    class="forecast">
+</div>
+
+</div>
+
+
+<!-- FARM TIPS -->
+
+<div class="card">
+
+<h2>🚜 Quick Farm Tips</h2>
+
+<div class="advice">
+
+🌧️ <b>Rain:</b>
+Check field drainage before heavy rain.
+
+<br><br>
+
+💧 <b>Irrigation:</b>
+Check soil moisture before watering.
+
+<br><br>
+
+🧪 <b>Fertilizer:</b>
+Avoid applying fertilizer immediately before heavy rain.
+
+<br><br>
+
+🐛 <b>Pest Control:</b>
+Avoid spraying during strong wind or rain.
+
+<br><br>
+
+🌱 <b>Crop:</b>
+Use weather information together with crop-stage recommendations.
+
+</div>
+
+</div>
+
+
+<button
+    class="home-btn"
+    onclick="goHome()">
+
+🏠 Back to Home
+
+</button>
+
+</main>
+
+</div>
+
+
+<script>
+
+/*
+=========================================
+API
+=========================================
+*/
+
+const GEO_API =
+"https://geocoding-api.open-meteo.com/v1/search";
+
+const WEATHER_API =
+"https://api.open-meteo.com/v1/forecast";
+
+
+/*
+=========================================
+SEARCH USING VILLAGE + DISTRICT + STATE
+=========================================
+*/
+
+async function searchByAddress(){
+
+const village =
+document.getElementById("village")
+.value
+.trim();
+
+const district =
+document.getElementById("district")
+.value
+.trim();
+
+const state =
+document.getElementById("state")
+.value
+.trim();
+
+
+if(!village){
+
+showError(
+"Please enter your village name."
+);
+
+return;
+}
+
+
+/*
+Build a complete search name.
+
+Example:
+
+Gollapudi, Vijayawada,
+Andhra Pradesh
+*/
+
+let searchText = village;
+
+if(district){
+
+searchText +=
+", " + district;
+
+}
+
+if(state){
+
+searchText +=
+", " + state;
+
+}
+
+
+hideError();
+hideSuccess();
+
+showLoading(true);
+
+
+try{
+
+const url =
+GEO_API +
+"?name=" +
+encodeURIComponent(searchText) +
+"&count=10" +
+"&language=en" +
+"&format=json";
+
+
+const response =
+await fetch(url);
+
+
+if(!response.ok){
+
+throw new Error(
+"Location service is unavailable."
+);
+
+}
+
+
+const data =
+await response.json();
+
+
+if(
+!data.results ||
+data.results.length === 0
+){
+
+/*
+Try village only as a second search.
+*/
+
+const secondURL =
+GEO_API +
+"?name=" +
+encodeURIComponent(village) +
+"&count=10" +
+"&language=en" +
+"&format=json";
+
+
+const secondResponse =
+await fetch(secondURL);
+
+
+const secondData =
+await secondResponse.json();
+
+
+if(
+!secondData.results ||
+secondData.results.length === 0
+){
+
+throw new Error(
+"Village not found. Please use GPS or enter the nearest town/city."
+);
+
+}
+
+
+const place =
+selectBestPlace(
+secondData.results,
+district,
+state
+);
+
+
+await getWeatherForLocation(
+place.latitude,
+place.longitude,
+place.name,
+place.country
+);
+
+}
+else{
+
+const place =
+selectBestPlace(
+data.results,
+district,
+state
+);
+
+
+await getWeatherForLocation(
+place.latitude,
+place.longitude,
+place.name,
+place.country
+);
+
+}
+
+
+showSuccess(
+"Weather location found successfully."
+);
+
+}
+catch(error){
+
+showError(
+error.message ||
+"Unable to find this location."
+);
+
+}
+
+
+showLoading(false);
+
+}
+
+
+/*
+=========================================
+SELECT BEST LOCATION
+=========================================
+*/
+
+function selectBestPlace(
+results,
+district,
+state
+){
+
+/*
+Try to find a result matching
+the district/state.
+*/
+
+const districtLower =
+district.toLowerCase();
+
+const stateLower =
+state.toLowerCase();
+
+
+let match =
+results.find(place => {
+
+const placeText =
+JSON.stringify(place)
+.toLowerCase();
+
+return (
+(!district ||
+placeText.includes(districtLower))
+&&
+(!state ||
+placeText.includes(stateLower))
+);
+
+});
+
+
+if(match){
+
+return match;
+
+}
+
+
+/*
+If no exact match is found,
+use the first result.
+*/
+
+return results[0];
+
+}
+
+
+/*
+=========================================
+GPS
+=========================================
+*/
+
+function useGPS(){
+
+hideError();
+hideSuccess();
+
+
+if(!navigator.geolocation){
+
+showError(
+"GPS is not supported by this browser."
+);
+
+return;
+}
+
+
+showLoading(true);
+
+
+navigator.geolocation.getCurrentPosition(
+
+async function(position){
+
+try{
+
+const latitude =
+position.coords.latitude;
+
+const longitude =
+position.coords.longitude;
+
+
+/*
+Get weather directly from GPS.
+*/
+
+await getWeatherForLocation(
+
+latitude,
+longitude,
+
+"My Farm Location",
+"GPS"
+
+);
+
+
+/*
+Reverse geocoding is attempted
+to find village/district/state.
+*/
+
+try{
+
+const address =
+await reverseGeocode(
+latitude,
+longitude
+);
+
+if(address){
+
+document.getElementById(
+"village"
+).value =
+address.village || "";
+
+document.getElementById(
+"district"
+).value =
+address.district || "";
+
+document.getElementById(
+"state"
+).value =
+address.state || "";
+
+}
+
+}
+catch(e){
+
+console.log(
+"Address lookup unavailable"
+);
+
+}
+
+
+showSuccess(
+"📍 GPS location detected successfully."
+);
+
+}
+catch(error){
+
+showError(
+"Unable to get weather for GPS location."
+);
+
+}
+
+
+showLoading(false);
+
+},
+
+function(error){
+
+showLoading(false);
+
+
+if(error.code === 1){
+
+showError(
+"Location permission was denied. Please allow location access."
+);
+
+}
+else if(error.code === 2){
+
+showError(
+"Your location could not be determined."
+);
+
+}
+else if(error.code === 3){
+
+showError(
+"GPS request timed out. Try again."
+);
+
+}
+else{
+
+showError(
+"Unable to access your GPS location."
+);
+
+}
+
+},
+
+{
+enableHighAccuracy:true,
+timeout:15000,
+maximumAge:300000
+}
+
+);
+
+}
+
+
+/*
+=========================================
+REVERSE GEOCODING
+=========================================
+*/
+
+async function reverseGeocode(
+latitude,
+longitude
+){
+
+/*
+Nominatim is used only to identify
+the address from GPS coordinates.
+*/
+
+const url =
+"https://nominatim.openstreetmap.org/reverse" +
+"?lat=" +
+encodeURIComponent(latitude) +
+"&lon=" +
+encodeURIComponent(longitude) +
+"&format=json" +
+"&addressdetails=1";
+
+
+const response =
+await fetch(url,{
+
+headers:{
+"Accept":"application/json"
+}
+
+});
+
+
+if(!response.ok){
+
+throw new Error(
+"Reverse geocoding failed."
+);
+
+}
+
+
+const data =
+await response.json();
+
+
+const address =
+data.address || {};
+
+
+return {
+
+village:
+address.village ||
+address.hamlet ||
+address.town ||
+address.city ||
+"",
+
+district:
+address.county ||
+address.state_district ||
+"",
+
+state:
+address.state ||
+""
+
+};
+
+}
+
+
+/*
+=========================================
+GET WEATHER
+=========================================
+*/
+
+async function getWeatherForLocation(
+
+latitude,
+longitude,
+name,
+country
+
+){
+
+const url =
+WEATHER_API +
+
+"?latitude=" +
+encodeURIComponent(latitude) +
+
+"&longitude=" +
+encodeURIComponent(longitude) +
+
+"&current=" +
+
+"temperature_2m," +
+"relative_humidity_2m," +
+"apparent_temperature," +
+"precipitation," +
+"weather_code," +
+"wind_speed_10m" +
+
+"&daily=" +
+
+"weather_code," +
+"temperature_2m_max," +
+"temperature_2m_min," +
+"precipitation_probability_max," +
+"precipitation_sum" +
+
+"&forecast_days=7" +
+
+"&timezone=auto";
+
+
+const response =
+await fetch(url);
+
+
+if(!response.ok){
+
+throw new Error(
+"Weather service unavailable."
+);
+
+}
+
+
+const data =
+await response.json();
+
+
+displayWeather(
+data,
+name,
+country
+);
+
+}
+
+
+/*
+=========================================
+DISPLAY WEATHER
+=========================================
+*/
+
+function displayWeather(
+data,
+name,
+country
+){
+
+document.getElementById(
+"weatherCard"
+).style.display =
+"block";
+
+
+document.getElementById(
+"forecastCard"
+).style.display =
+"block";
+
+
+document.getElementById(
+"adviceCard"
+).style.display =
+"block";
+
+
+let location =
+name;
+
+
+if(country &&
+country !== "GPS"){
+
+location +=
+", " + country;
+
+}
+
+
+document.getElementById(
+"locationName"
+).textContent =
+"📍 " + location;
+
+
+const current =
+data.current;
+
+
+document.getElementById(
+"temperature"
+).textContent =
+Math.round(
+current.temperature_2m
+) + "°C";
+
+
+document.getElementById(
+"feels"
+).textContent =
+Math.round(
+current.apparent_temperature
+) + "°C";
+
+
+document.getElementById(
+"humidity"
+).textContent =
+current.relative_humidity_2m +
+"%";
+
+
+document.getElementById(
+"rain"
+).textContent =
+current.precipitation +
+" mm";
+
+
+document.getElementById(
+"wind"
+).textContent =
+Math.round(
+current.wind_speed_10m
+) +
+" km/h";
+
+
+document.getElementById(
+"condition"
+).textContent =
+weatherDescription(
+current.weather_code
+);
+
+
+document.getElementById(
+"weatherIcon"
+).textContent =
+weatherIcon(
+current.weather_code
+);
+
+
+createForecast(data);
+
+createFarmingAdvice(data);
+
+}
+
+
+/*
+=========================================
+WEATHER ICON
+=========================================
+*/
+
+function weatherIcon(code){
+
+if(code === 0)
+return "☀️";
+
+if(code === 1 || code === 2)
+return "🌤️";
+
+if(code === 3)
+return "☁️";
+
+if(code === 45 || code === 48)
+return "🌫️";
+
+if(code >= 51 && code <= 67)
+return "🌧️";
+
+if(code >= 71 && code <= 77)
+return "🌨️";
+
+if(code >= 80 && code <= 82)
+return "🌦️";
+
+if(code >= 95)
+return "⛈️";
+
+return "🌤️";
+
+}
+
+
+/*
+=========================================
+DESCRIPTION
+=========================================
+*/
+
+function weatherDescription(code){
+
+if(code === 0)
+return "Clear sky";
+
+if(code === 1)
+return "Mainly clear";
+
+if(code === 2)
+return "Partly cloudy";
+
+if(code === 3)
+return "Overcast";
+
+if(code === 45 || code === 48)
+return "Fog";
+
+if(code >= 51 && code <= 55)
+return "Drizzle";
+
+if(code >= 61 && code <= 67)
+return "Rain";
+
+if(code >= 71 && code <= 77)
+return "Snow";
+
+if(code >= 80 && code <= 82)
+return "Rain showers";
+
+if(code >= 95)
+return "Thunderstorm";
+
+return "Variable weather";
+
+}
+
+
+/*
+=========================================
+7 DAY FORECAST
+=========================================
+*/
+
+function createForecast(data){
+
+const container =
+document.getElementById(
+"forecast"
+);
+
+container.innerHTML = "";
+
+
+const daily =
+data.daily;
+
+
+for(
+let i = 0;
+i < daily.time.length;
+i++
+){
+
+const date =
+new Date(
+daily.time[i] +
+"T12:00:00"
+);
+
+
+const day =
+date.toLocaleDateString(
+"en-US",
+{
+weekday:"short"
+}
+);
+
+
+const icon =
+weatherIcon(
+daily.weather_code[i]
+);
+
+
+const max =
+Math.round(
+daily.temperature_2m_max[i]
+);
+
+
+const min =
+Math.round(
+daily.temperature_2m_min[i]
+);
+
+
+const probability =
+daily.precipitation_probability_max[i]
+?? 0;
+
+
+const rain =
+daily.precipitation_sum[i]
+?? 0;
+
+
+const div =
+document.createElement(
+"div"
+);
+
+
+div.className =
+"day";
+
+
+div.innerHTML = `
+
+<div class="day-name">
+${day}
+</div>
+
+<div class="day-icon">
+${icon}
+</div>
+
+<div>
+${max}° / ${min}°
+</div>
+
+<div class="rain">
+🌧️ ${probability}%
+</div>
+
+<div class="rain">
+${rain} mm
+</div>
+
+`;
+
+
+container.appendChild(div);
+
+}
+
+}
+
+
+/*
+=========================================
+FARMING ADVICE
+=========================================
+*/
+
+function createFarmingAdvice(data){
+
+const current =
+data.current;
+
+const daily =
+data.daily;
+
+
+const rain =
+daily.precipitation_sum[0] || 0;
+
+
+const probability =
+daily.precipitation_probability_max[0] || 0;
+
+
+const temperature =
+current.temperature_2m;
+
+
+const wind =
+current.wind_speed_10m;
+
+
+let advice = [];
+
+
+if(
+probability >= 70 ||
+rain >= 10
+){
+
+advice.push(
+"🌧️ Rain is likely. Check field drainage and avoid unnecessary irrigation."
+);
+
+advice.push(
+"🧪 Avoid applying fertilizer or pesticide immediately before expected heavy rain."
+);
+
+}
+else{
+
+advice.push(
+"☀️ No strong rain signal today. Check soil moisture before irrigation."
+);
+
+}
+
+
+if(
+temperature >= 35
+){
+
+advice.push(
+"🌡️ High temperature. Monitor crops for heat and water stress."
+);
+
+}
+
+
+if(
+temperature <= 10
+){
+
+advice.push(
+"❄️ Low temperature. Monitor temperature-sensitive crops."
+);
+
+}
+
+
+if(
+wind >= 30
+){
+
+advice.push(
+"💨 Strong wind. Avoid spraying pesticides during strong winds."
+);
+
+}
+
+
+advice.push(
+"🌱 Combine weather information with your crop stage and local agricultural recommendations."
+);
+
+
+document.getElementById(
+"farmingAdvice"
+).innerHTML =
+
+advice
+.map(
+item => "• " + item
+)
+.join("<br><br>");
+
+}
+
+
+/*
+=========================================
+LOADING
+=========================================
+*/
+
+function showLoading(show){
+
+document.getElementById(
+"loading"
+).style.display =
+show ? "block" : "none";
+
+}
+
+
+/*
+=========================================
+ERROR
+=========================================
+*/
+
+function showError(message){
+
+const error =
+document.getElementById(
+"error"
+);
+
+error.textContent =
+"⚠️ " + message;
+
+error.style.display =
+"block";
+
+}
+
+
+function hideError(){
+
+document.getElementById(
+"error"
+).style.display =
+"none";
+
+}
+
+
+/*
+=========================================
+SUCCESS
+=========================================
+*/
+
+function showSuccess(message){
+
+const success =
+document.getElementById(
+"success"
+);
+
+success.textContent =
+message;
+
+success.style.display =
+"block";
+
+}
+
+
+function hideSuccess(){
+
+document.getElementById(
+"success"
+).style.display =
+"none";
+
+}
+
+
+/*
+=========================================
+CLEAR
+=========================================
+*/
+
+function clearLocation(){
+
+document.getElementById(
+"village"
+).value = "";
+
+document.getElementById(
+"district"
+).value = "";
+
+document.getElementById(
+"state"
+).value = "";
+
+
+document.getElementById(
+"weatherCard"
+).style.display =
+"none";
+
+
+document.getElementById(
+"forecastCard"
+).style.display =
+"none";
+
+
+document.getElementById(
+"adviceCard"
+).style.display =
+"none";
+
+
+hideError();
+hideSuccess();
+
+}
+
+
+/*
+=========================================
+HOME
+=========================================
+*/
+
+function goHome(){
+
+window.location.href =
+"home.html";
+
+}
+
+</script>
+
+</body>
+  </html>
