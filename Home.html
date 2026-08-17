@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Agriculture - Home</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #eef8ef;
+      color: #173b24;
+    }
+
+    header {
+      background: linear-gradient(135deg, #087b35, #20a34a);
+      color: white;
+      padding: 22px 18px 28px;
+      border-radius: 0 0 28px 28px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 45px;
+      height: 45px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+    }
+
+    .profile {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: white;
+      color: #087b35;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    header h1 {
+      font-size: 24px;
+      margin-top: 22px;
+    }
+
+    header p {
+      margin-top: 6px;
+      opacity: 0.9;
+    }
+
+    /* MARKET PRICE */
+
+    .market-section {
+      padding: 18px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title h2 {
+      font-size: 20px;
+      color: #087b35;
+    }
+
+    .view {
+      color: #087b35;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .market-container {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+
+    .market-card {
+      min-width: 145px;
+      background: white;
+      border-radius: 16px;
+      padding: 15px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .market-card .crop {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .price {
+      font-size: 19px;
+      color: #087b35;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .change {
+      font-size: 12px;
+      color: #16833c;
+      margin-top: 5px;
+    }
+
+    /* FEATURES */
+
+    .features {
+      padding: 0 18px 100px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .feature {
+      background: white;
+      border-radius: 18px;
+      padding: 20px 14px;
+      min-height: 150px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .feature:active {
+      transform: scale(0.97);
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      background: #e4f7e8;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .feature h3 {
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .feature p {
+      color: #6c786f;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    /* BOTTOM NAVIGATION */
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: white;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .nav-item {
+      text-align: center;
+      color: #68736c;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .nav-item .icon {
+      font-size: 23px;
+      margin-bottom: 3px;
+    }
+
+    .nav-item.active {
+      color: #087b35;
+      font-weight: bold;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 380px) {
+      .feature-grid {
+        gap: 10px;
+      }
+
+      .feature {
+        padding: 15px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header>
+    <div class="top">
+
+      <div class="logo">
+        <div class="logo-icon">🌱</div>
+
+        <div>
+          <strong>Smart Agriculture</strong>
+          <div style="font-size:12px;">
+            Farmer Advisory System
+          </div>
+        </div>
+      </div>
+
+      <div class="profile" onclick="openProfile()">
+        F
+      </div>
+
+    </div>
+
+    <h1>Welcome, Farmer 👨‍🌾</h1>
+    <p>Your smart farming assistant</p>
+  </header>
+
+
+  <!-- MARKET PRICES -->
+
+  <section class="market-section">
+
+    <div class="section-title">
+      <h2>📈 Market Prices</h2>
+      <span class="view" onclick="marketPrices()">View All</span>
+    </div>
+
+    <div class="market-container">
+
+      <div class="market-card">
+        <div class="crop">🌾 Paddy</div>
+        <div class="price">₹2,350</div>
+        <div class="change">▲ 2.4% today</div>
+      </div>
+
+      <div class="market-card">
+        <div class="crop">🌽 Maize</div>
+        <div class="price">₹2,180</div>
+        <div class="change">▲ 1.8% today</div>
+      </div>
+
+      <div class="market-card">
+        <div class="crop">🥜 Groundnut</div>
+        <div class="price">₹6,250</div>
+        <div class="change">▲ 3.1% today</div>
+      </div>
+
+      <div class="market-card">
+        <div class="crop">🌶️ Chilli</div>
+        <div class="price">₹8,400</div>
+        <div class="change">▲ 1.2% today</div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FEATURES -->
+
+  <section class="features">
+
+    <div class="section-title">
+      <h2>🌱 Farming Services</h2>
+    </div>
+
+    <div class="feature-grid">
+
+      <!-- CROP -->
+
+      <div class="feature" onclick="openPage('crop.html')">
+
+        <div class="feature-icon">🌱</div>
+
+        <h3>Which Crop to Grow</h3>
+
+        <p>
+          Get crop recommendations based on soil,
+          season and farming conditions.
+        </p>
+
+      </div>
+
+
+      <!-- SOIL -->
+
+      <div class="feature" onclick="openPage('soil.html')">
+
+        <div class="feature-icon">🪨</div>
+
+        <h3>Soil Identification</h3>
+
+        <p>
+          Identify soil type and understand
+          its characteristics.
+        </p>
+
+      </div>
+
+
+      <!-- IRRIGATION -->
+
+      <div class="feature" onclick="openPage('irrigation.html')">
+
+        <div class="feature-icon">💧</div>
+
+        <h3>Irrigation</h3>
+
+        <p>
+          Know the water requirements and
+          irrigation schedule for your crop.
+        </p>
+
+      </div>
+
+
+      <!-- FERTILIZER -->
+
+      <div class="feature" onclick="openPage('fertilizer.html')">
+
+        <div class="feature-icon">🌾</div>
+
+        <h3>Fertilizer Advice</h3>
+
+        <p>
+          Get fertilizer recommendations
+          for better crop growth.
+        </p>
+
+      </div>
+
+
+      <!-- WEATHER -->
+
+      <div class="feature" onclick="openPage('weather.html')">
+
+        <div class="feature-icon">🌦️</div>
+
+        <h3>Weather Advice</h3>
+
+        <p>
+          Weather-based farming recommendations
+          for your field.
+        </p>
+
+      </div>
+
+
+      <!-- PEST -->
+
+      <div class="feature" onclick="openPage('pest.html')">
+
+        <div class="feature-icon">🐛</div>
+
+        <h3>Pest & Disease</h3>
+
+        <p>
+          Basic pest and crop disease
+          identification and guidance.
+        </p>
+
+      </div>
+
+
+      <!-- CROP MANAGEMENT -->
+
+      <div class="feature" onclick="openPage('management.html')">
+
+        <div class="feature-icon">📊</div>
+
+        <h3>Crop Management</h3>
+
+        <p>
+          Manage your crop activities,
+          growth and farming schedule.
+        </p>
+
+      </div>
+
+
+      <!-- MARKET -->
+
+      <div class="feature" onclick="marketPrices()">
+
+        <div class="feature-icon">💰</div>
+
+        <h3>Market Prices</h3>
+
+        <p>
+          Check crop prices and market
+          information.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- BOTTOM NAVIGATION -->
+
+  <nav class="bottom-nav">
+
+    <div class="nav-item active" onclick="goHome()">
+      <div class="icon">🏠</div>
+      Home
+    </div>
+
+    <div class="nav-item" onclick="openPage('crop.html')">
+      <div class="icon">🌱</div>
+      Crops
+    </div>
+
+    <div class="nav-item" onclick="openPage('weather.html')">
+      <div class="icon">🌦️</div>
+      Weather
+    </div>
+
+    <div class="nav-item" onclick="marketPrices()">
+      <div class="icon">💰</div>
+      Market
+    </div>
+
+    <div class="nav-item" onclick="openProfile()">
+      <div class="icon">👤</div>
+      Profile
+    </div>
+
+  </nav>
+
+
+  <script>
+
+    function openPage(page) {
+      window.location.href = page;
+    }
+
+    function goHome() {
+      window.location.href = "home.html";
+    }
+
+    function marketPrices() {
+      window.location.href = "market.html";
+    }
+
+    function openProfile() {
+      window.location.href = "profile.html";
+    }
+
+  </script>
+
+</body>
+  </html>
