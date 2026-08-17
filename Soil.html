@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soil Identification - Smart Agriculture</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f1f8f3;
+      color: #173b24;
+    }
+
+    .app {
+      max-width: 500px;
+      margin: auto;
+      min-height: 100vh;
+      padding-bottom: 30px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #087b35, #20a34a);
+      color: white;
+      padding: 20px;
+      border-radius: 0 0 28px 28px;
+    }
+
+    .back {
+      background: rgba(255,255,255,.2);
+      border: 1px solid white;
+      color: white;
+      padding: 9px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    header h1 {
+      margin-top: 20px;
+      font-size: 25px;
+    }
+
+    header p {
+      margin-top: 7px;
+    }
+
+    .content {
+      padding: 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    .card h2 {
+      color: #087b35;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #647168;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 15px 0 7px;
+    }
+
+    select,
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      background: white;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      background: #087b35;
+      color: white;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 11px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #result {
+      display: none;
+    }
+
+    .soil-name {
+      font-size: 24px;
+      color: #087b35;
+      font-weight: bold;
+      margin: 10px 0 15px;
+    }
+
+    .info {
+      background: #f5faf6;
+      border-radius: 12px;
+      padding: 13px;
+      margin-top: 10px;
+    }
+
+    .info strong {
+      color: #087b35;
+    }
+
+    .crop-list {
+      margin-top: 12px;
+      padding-left: 20px;
+      line-height: 1.8;
+    }
+
+    .recommendation {
+      background: #e8f7eb;
+      padding: 14px;
+      border-radius: 12px;
+      margin-top: 15px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .photo-note {
+      background: #fff7dc;
+      color: #6d5900;
+      padding: 13px;
+      border-radius: 11px;
+      margin-top: 15px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .home-btn {
+      display: block;
+      margin: 20px auto;
+      border: none;
+      background: transparent;
+      color: #087b35;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header>
+
+    <button class="back" onclick="goHome()">
+      ← Back
+    </button>
+
+    <h1>🪨 Soil Identification</h1>
+
+    <p>
+      Identify your soil type and get farming guidance.
+    </p>
+
+  </header>
+
+
+  <main class="content">
+
+    <!-- INTRO -->
+
+    <div class="card">
+
+      <h2>🌱 Soil Information</h2>
+
+      <p>
+        Select the characteristics that best describe your
+        field soil. The app will provide a basic soil
+        classification and farming guidance.
+      </p>
+
+    </div>
+
+
+    <!-- FORM -->
+
+    <div class="card">
+
+      <h2>Identify Your Soil</h2>
+
+
+      <label for="colour">
+        🎨 Soil Colour
+      </label>
+
+      <select id="colour">
+
+        <option value="">
+          Select colour
+        </option>
+
+        <option value="black">
+          Black / Dark
+        </option>
+
+        <option value="red">
+          Red / Reddish
+        </option>
+
+        <option value="brown">
+          Brown
+        </option>
+
+        <option value="yellow">
+          Yellow / Light
+        </option>
+
+        <option value="grey">
+          Grey
+        </option>
+
+      </select>
+
+
+      <label for="texture">
+        ✋ Soil Texture
+      </label>
+
+      <select id="texture">
+
+        <option value="">
+          Select texture
+        </option>
+
+        <option value="sandy">
+          Sandy / Gritty
+        </option>
+
+        <option value="clay">
+          Clay / Sticky
+        </option>
+
+        <option value="loamy">
+          Loamy / Soft
+        </option>
+
+        <option value="silty">
+          Silty / Smooth
+        </option>
+
+      </select>
+
+
+      <label for="water">
+        💧 Water Holding
+      </label>
+
+      <select id="water">
+
+        <option value="">
+          Select water holding capacity
+        </option>
+
+        <option value="low">
+          Low
+        </option>
+
+        <option value="medium">
+          Medium
+        </option>
+
+        <option value="high">
+          High
+        </option>
+
+      </select>
+
+
+      <label for="drainage">
+        💦 Drainage
+      </label>
+
+      <select id="drainage">
+
+        <option value="">
+          Select drainage
+        </option>
+
+        <option value="fast">
+          Fast
+        </option>
+
+        <option value="moderate">
+          Moderate
+        </option>
+
+        <option value="slow">
+          Slow
+        </option>
+
+      </select>
+
+
+      <button class="btn" onclick="identifySoil()">
+        🔍 Identify Soil
+      </button>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div class="card" id="result">
+
+      <h2>Soil Result</h2>
+
+      <div class="soil-name" id="soilName">
+      </div>
+
+
+      <div class="info">
+
+        <strong>Characteristics</strong>
+
+        <p id="characteristics"></p>
+
+      </div>
+
+
+      <div class="info">
+
+        <strong>Suitable Crops</strong>
+
+        <ul class="crop-list" id="crops"></ul>
+
+      </div>
+
+
+      <div class="recommendation">
+
+        <strong>🌱 Recommendation</strong>
+
+        <p id="recommendation"></p>
+
+      </div>
+
+
+      <div class="photo-note">
+
+        ⚠️ This is a basic identification tool.
+        For accurate soil classification and fertilizer
+        recommendations, use a laboratory soil test.
+
+      </div>
+
+    </div>
+
+
+    <button class="home-btn" onclick="goHome()">
+      🏠 Back to Home
+    </button>
+
+  </main>
+
+</div>
+
+
+<script>
+
+function identifySoil() {
+
+  const colour =
+    document.getElementById("colour").value;
+
+  const texture =
+    document.getElementById("texture").value;
+
+  const water =
+    document.getElementById("water").value;
+
+  const drainage =
+    document.getElementById("drainage").value;
+
+
+  if (!colour || !texture || !water || !drainage) {
+
+    alert(
+      "Please select all soil characteristics."
+    );
+
+    return;
+  }
+
+
+  let soil = "";
+  let characteristics = "";
+  let crops = [];
+  let recommendation = "";
+
+
+  /*
+    BASIC SOIL CLASSIFICATION
+  */
+
+
+  // BLACK SOIL
+
+  if (
+    colour === "black" &&
+    (texture === "clay" || water === "high")
+  ) {
+
+    soil = "Black Soil";
+
+    characteristics =
+      "Usually dark in colour with good moisture-holding capacity. " +
+      "It can become sticky when wet and hard when dry.";
+
+    crops = [
+      "Cotton",
+      "Soybean",
+      "Wheat",
+      "Chickpea",
+      "Sorghum"
+    ];
+
+    recommendation =
+      "Maintain suitable drainage and avoid working very wet clay soil. " +
+      "Use soil-test-based nutrient management.";
+
+  }
+
+
+  // RED SOIL
+
+  else if (
+    colour === "red" &&
+    (texture === "sandy" || texture === "loamy")
+  ) {
+
+    soil = "Red Soil";
+
+    characteristics =
+      "Often well drained and may have relatively low organic matter. " +
+      "Nutrient availability can vary considerably.";
+
+    crops = [
+      "Groundnut",
+      "Millets",
+      "Maize",
+      "Pulses",
+      "Vegetables"
+    ];
+
+    recommendation =
+      "Add organic matter where appropriate and manage nutrients " +
+      "according to a soil test.";
+
+  }
+
+
+  // SANDY SOIL
+
+  else if (
+    texture === "sandy" &&
+    water === "low"
+  ) {
+
+    soil = "Sandy Soil";
+
+    characteristics =
+      "Loose and well drained, but generally holds less water " +
+      "and nutrients than heavier soils.";
+
+    crops = [
+      "Groundnut",
+      "Millets",
+      "Some vegetables",
+      "Water-efficient crops"
+    ];
+
+    recommendation =
+      "Use appropriate irrigation scheduling and organic matter " +
+      "management to improve moisture retention.";
+
+  }
+
+
+  // CLAY SOIL
+
+  else if (
+    texture === "clay" &&
+    (water === "high" || drainage === "slow")
+  ) {
+
+    soil = "Clay Soil";
+
+    characteristics =
+      "Fine textured soil with high water-holding capacity. " +
+      "It can have slow drainage and become sticky when wet.";
+
+    crops = [
+      "Paddy",
+      "Wheat",
+      "Some pulses",
+      "Suitable fodder crops"
+    ];
+
+    recommendation =
+      "Maintain drainage and avoid excessive irrigation. " +
+      "Follow suitable soil-management practices.";
+
+  }
+
+
+  // LOAMY SOIL
+
+  else if (
+    texture === "loamy" &&
+    water === "medium" &&
+    drainage === "moderate"
+  ) {
+
+    soil = "Loamy Soil";
+
+    characteristics =
+      "A balanced texture that can provide good water drainage " +
+      "and moisture retention when properly managed.";
+
+    crops = [
+      "Wheat",
+      "Maize",
+      "Pulses",
+      "Vegetables",
+      "Oilseeds"
+    ];
+
+    recommendation =
+      "Maintain organic matter and use balanced nutrients " +
+      "based on soil-test results.";
+
+  }
+
+
+  // SILTY SOIL
+
+  else if (texture === "silty") {
+
+    soil = "Silty Soil";
+
+    characteristics =
+      "Smooth-textured soil that can hold moisture well but " +
+      "may be susceptible to erosion and compaction.";
+
+    crops = [
+      "Wheat",
+      "Maize",
+      "Vegetables",
+      "Pulses"
+    ];
+
+    recommendation =
+      "Use erosion-control practices and avoid excessive soil disturbance.";
+
+  }
+
+
+  // GENERAL
+
+  else {
+
+    soil = "Mixed / Needs Further Testing";
+
+    characteristics =
+      "The selected characteristics do not clearly match one " +
+      "specific soil category.";
+
+    crops = [
+      "Crop selection should be based on soil test",
+      "Local crops can be evaluated after testing"
+    ];
+
+    recommendation =
+      "For reliable identification, obtain a soil sample and " +
+      "consider a laboratory soil test for texture, pH, organic matter " +
+      "and nutrient levels.";
+
+  }
+
+
+  /*
+    DISPLAY RESULT
+  */
+
+  document.getElementById("soilName")
+    .textContent = soil;
+
+
+  document.getElementById("characteristics")
+    .textContent = characteristics;
+
+
+  const cropList =
+    document.getElementById("crops");
+
+  cropList.innerHTML = "";
+
+
+  crops.forEach(function(crop) {
+
+    const li =
+      document.createElement("li");
+
+    li.textContent = crop;
+
+    cropList.appendChild(li);
+
+  });
+
+
+  document.getElementById("recommendation")
+    .textContent = recommendation;
+
+
+  document.getElementById("result")
+    .style.display = "block";
+
+
+  document.getElementById("result")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+
+function goHome() {
+
+  window.location.href = "home.html";
+
+}
+
+</script>
+
+</body>
+</html>
