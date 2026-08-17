@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Agriculture - Farmer Advisory System</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #087b32, #35a853);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #163b27;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* SPLASH */
+    #splash {
+      text-align: center;
+      color: white;
+    }
+
+    .logo {
+      width: 150px;
+      height: 150px;
+      background: white;
+      border-radius: 50%;
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 70px;
+    }
+
+    #splash h1 {
+      margin-top: 30px;
+      font-size: 34px;
+    }
+
+    #splash p {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    /* AUTH */
+    .card {
+      background: white;
+      border-radius: 28px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 25px;
+    }
+
+    .tab {
+      width: 50%;
+      padding: 17px;
+      border: none;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #eee;
+    }
+
+    .tab.active {
+      background: #087b32;
+      color: white;
+    }
+
+    h2 {
+      color: #087b32;
+      margin-bottom: 25px;
+      font-size: 28px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 15px 0 7px;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 17px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #087b32;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      background: #087b32;
+      color: white;
+      padding: 17px;
+      border-radius: 12px;
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn:disabled {
+      opacity: .6;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      display: none;
+    }
+
+    .error {
+      display: block;
+      background: #ffe8e8;
+      color: #b00020;
+    }
+
+    .success {
+      display: block;
+      background: #e5f8e9;
+      color: #087b32;
+    }
+
+    /* OTP */
+    #otpScreen {
+      display: none;
+    }
+
+    .otp-title {
+      text-align: center;
+    }
+
+    .otp-input {
+      text-align: center;
+      font-size: 28px;
+      letter-spacing: 10px;
+    }
+
+    .back {
+      background: transparent;
+      border: none;
+      color: #087b32;
+      font-size: 16px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- SPLASH SCREEN -->
+  <section id="splash">
+    <div class="logo">🌱</div>
+    <h1>Smart Agriculture</h1>
+    <p>Farmer Advisory System</p>
+  </section>
+
+
+  <!-- LOGIN / REGISTER -->
+  <section id="authScreen" style="display:none;">
+
+    <div class="card">
+
+      <div class="tabs">
+        <button class="tab" id="loginTab" onclick="showLogin()">
+          Login
+        </button>
+
+        <button class="tab active" id="registerTab" onclick="showRegister()">
+          Register
+        </button>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="registerForm">
+
+        <h2>Create Farmer Account</h2>
+
+        <label>Farmer Name</label>
+        <input
+          type="text"
+          id="farmerName"
+          placeholder="Enter your name"
+        >
+
+        <label>Mobile Number</label>
+        <input
+          type="tel"
+          id="registerMobile"
+          placeholder="10 digit mobile number"
+          maxlength="10"
+          inputmode="numeric"
+        >
+
+        <button class="btn" onclick="sendOTP('register')">
+          📱 Send OTP
+        </button>
+
+        <div id="registerMessage" class="message"></div>
+
+        <div id="registerLoading" class="loading">
+          Sending OTP...
+        </div>
+
+      </div>
+
+
+      <!-- LOGIN -->
+      <div id="loginForm" style="display:none;">
+
+        <h2>Farmer Login</h2>
+
+        <label>Mobile Number</label>
+        <input
+          type="tel"
+          id="loginMobile"
+          placeholder="10 digit mobile number"
+          maxlength="10"
+          inputmode="numeric"
+        >
+
+        <button class="btn" onclick="sendOTP('login')">
+          📱 Send OTP
+        </button>
+
+        <div id="loginMessage" class="message"></div>
+
+        <div id="loginLoading" class="loading">
+          Sending OTP...
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- OTP SCREEN -->
+  <section id="otpScreen">
+
+    <div class="card">
+
+      <h2 class="otp-title">Verify Mobile</h2>
+
+      <p style="text-align:center; margin-bottom:20px;">
+        Enter the OTP sent to
+        <strong id="phoneDisplay"></strong>
+      </p>
+
+      <label>OTP</label>
+
+      <input
+        id="otp"
+        class="otp-input"
+        type="tel"
+        maxlength="6"
+        placeholder="000000"
+        inputmode="numeric"
+      >
+
+      <button class="btn" onclick="verifyOTP()">
+        Verify OTP
+      </button>
+
+      <div id="otpMessage" class="message"></div>
+
+      <div id="otpLoading" class="loading">
+        Verifying...
+      </div>
+
+      <button class="back" onclick="backToAuth()">
+        ← Change mobile number
+      </button>
+
+    </div>
+
+  </section>
+
+</div>
+
+
+<script>
+
+  /*
+    IMPORTANT:
+    Replace this with your actual Render URL.
+
+    Example:
+    https://smart-agriculture-advisory-system-wdma.onrender.com
+  */
+  const API_URL =
+    "https://YOUR-RENDER-APP.onrender.com";
+
+
+  let currentMode = "";
+  let currentMobile = "";
+  let currentName = "";
+
+
+  // -----------------------------
+  // SPLASH
+  // -----------------------------
+
+  setTimeout(function() {
+
+    document.getElementById("splash").style.display = "none";
+    document.getElementById("authScreen").style.display = "block";
+
+  }, 2500);
+
+
+  // -----------------------------
+  // LOGIN / REGISTER TABS
+  // -----------------------------
+
+  function showLogin() {
+
+    document.getElementById("registerForm").style.display = "none";
+    document.getElementById("loginForm").style.display = "block";
+
+    document.getElementById("loginTab").classList.add("active");
+    document.getElementById("registerTab").classList.remove("active");
+
+  }
+
+
+  function showRegister() {
+
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("registerForm").style.display = "block";
+
+    document.getElementById("registerTab").classList.add("active");
+    document.getElementById("loginTab").classList.remove("active");
+
+  }
+
+
+  // -----------------------------
+  // SEND OTP
+  // -----------------------------
+
+  async function sendOTP(mode) {
+
+    let mobile;
+
+    if (mode === "register") {
+
+      currentName =
+        document.getElementById("farmerName").value.trim();
+
+      mobile =
+        document.getElementById("registerMobile").value.trim();
+
+      if (!currentName) {
+        showMessage(
+          "registerMessage",
+          "Please enter farmer name.",
+          "error"
+        );
+        return;
+      }
+
+    } else {
+
+      mobile =
+        document.getElementById("loginMobile").value.trim();
+
+    }
+
+
+    if (!/^[0-9]{10}$/.test(mobile)) {
+
+      showMessage(
+        mode === "register"
+          ? "registerMessage"
+          : "loginMessage",
+        "Enter a valid 10 digit mobile number.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    currentMode = mode;
+    currentMobile = mobile;
+
+
+    const messageId =
+      mode === "register"
+        ? "registerMessage"
+        : "loginMessage";
+
+    const loadingId =
+      mode === "register"
+        ? "registerLoading"
+        : "loginLoading";
+
+
+    document.getElementById(loadingId).style.display = "block";
+
+
+    try {
+
+      const response = await fetch(
+        API_URL + "/api/send-otp",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            mobile: mobile,
+            name: currentName
+          })
+        }
+      );
+
+
+      const data = await response.json();
+
+
+      document.getElementById(loadingId).style.display = "none";
+
+
+      if (!response.ok || !data.success) {
+
+        showMessage(
+          messageId,
+          data.message || "Unable to send OTP.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      document.getElementById("authScreen").style.display = "none";
+
+      document.getElementById("otpScreen").style.display = "block";
+
+      document.getElementById("phoneDisplay").textContent =
+        "+91 " + mobile;
+
+      document.getElementById("otp").value = "";
+
+      showMessage(
+        "otpMessage",
+        "OTP sent successfully.",
+        "success"
+      );
+
+
+    } catch (error) {
+
+      document.getElementById(loadingId).style.display = "none";
+
+      showMessage(
+        messageId,
+        "Server connection failed. Check your Render URL.",
+        "error"
+      );
+
+      console.error(error);
+
+    }
+
+  }
+
+
+  // -----------------------------
+  // VERIFY OTP
+  // -----------------------------
+
+  async function verifyOTP() {
+
+    const otp =
+      document.getElementById("otp").value.trim();
+
+
+    if (!/^[0-9]{6}$/.test(otp)) {
+
+      showMessage(
+        "otpMessage",
+        "Enter the 6 digit OTP.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    document.getElementById("otpLoading").style.display = "block";
+
+
+    try {
+
+      const response = await fetch(
+        API_URL + "/api/verify-otp",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            mobile: currentMobile,
+            otp: otp,
+            mode: currentMode,
+            name: currentName
+          })
+        }
+      );
+
+
+      const data = await response.json();
+
+
+      document.getElementById("otpLoading").style.display = "none";
+
+
+      if (!response.ok || !data.success) {
+
+        showMessage(
+          "otpMessage",
+          data.message || "Invalid OTP.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      // Save farmer information
+      localStorage.setItem(
+        "farmerName",
+        currentName
+      );
+
+      localStorage.setItem(
+        "farmerMobile",
+        currentMobile
+      );
+
+
+      // Open Home page
+      window.location.href = "home.html";
+
+
+    } catch (error) {
+
+      document.getElementById("otpLoading").style.display = "none";
+
+      showMessage(
+        "otpMessage",
+        "Server connection failed.",
+        "error"
+      );
+
+      console.error(error);
+
+    }
+
+  }
+
+
+  // -----------------------------
+  // BACK
+  // -----------------------------
+
+  function backToAuth() {
+
+    document.getElementById("otpScreen").style.display = "none";
+
+    document.getElementById("authScreen").style.display = "block";
+
+  }
+
+
+  // -----------------------------
+  // MESSAGE
+  // -----------------------------
+
+  function showMessage(id, text, type) {
+
+    const element =
+      document.getElementById(id);
+
+    element.textContent = text;
+
+    element.className =
+      "message " + type;
+
+  }
+
+</script>
+
+</body>
+        </html>
