@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Irrigation Advisory - Smart Agriculture</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #eef8ef;
+      color: #173b24;
+    }
+
+    .app {
+      max-width: 500px;
+      margin: auto;
+      min-height: 100vh;
+      padding-bottom: 30px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #087b35, #20a34a);
+      color: white;
+      padding: 20px;
+      border-radius: 0 0 28px 28px;
+    }
+
+    .back {
+      background: rgba(255,255,255,.2);
+      border: 1px solid white;
+      color: white;
+      padding: 9px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    header h1 {
+      margin-top: 20px;
+      font-size: 25px;
+    }
+
+    header p {
+      margin-top: 7px;
+    }
+
+    .content {
+      padding: 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    .card h2 {
+      color: #087b35;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #657168;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 15px 0 7px;
+    }
+
+    select {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: white;
+      font-size: 16px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      background: #087b35;
+      color: white;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 11px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #result {
+      display: none;
+    }
+
+    .water-icon {
+      font-size: 48px;
+      text-align: center;
+      margin: 5px 0 12px;
+    }
+
+    .result-title {
+      text-align: center;
+      color: #087b35;
+      font-size: 23px;
+    }
+
+    .result-box {
+      background: #f4faf5;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .result-box strong {
+      color: #087b35;
+    }
+
+    .status {
+      text-align: center;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 12px;
+      background: #e5f6e9;
+      color: #087b35;
+      font-weight: bold;
+    }
+
+    .warning {
+      background: #fff7dc;
+      color: #6c5900;
+      padding: 13px;
+      border-radius: 10px;
+      margin-top: 15px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .tips {
+      margin-top: 10px;
+      padding-left: 20px;
+      line-height: 1.8;
+      color: #536057;
+      font-size: 14px;
+    }
+
+    .home-btn {
+      display: block;
+      margin: 20px auto;
+      border: none;
+      background: transparent;
+      color: #087b35;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+
+  <header>
+
+    <button class="back" onclick="goHome()">
+      ← Back
+    </button>
+
+    <h1>💧 Irrigation Advisory</h1>
+
+    <p>
+      Get basic water-management guidance for your crop.
+    </p>
+
+  </header>
+
+
+  <main class="content">
+
+    <!-- INTRO -->
+
+    <div class="card">
+
+      <h2>💧 Smart Water Management</h2>
+
+      <p>
+        Select your crop and field conditions to receive
+        basic irrigation guidance.
+      </p>
+
+    </div>
+
+
+    <!-- FORM -->
+
+    <div class="card">
+
+      <h2>Field Information</h2>
+
+
+      <label for="crop">
+        🌱 Crop
+      </label>
+
+      <select id="crop">
+
+        <option value="">
+          Select crop
+        </option>
+
+        <option value="paddy">
+          Paddy / Rice
+        </option>
+
+        <option value="wheat">
+          Wheat
+        </option>
+
+        <option value="maize">
+          Maize
+        </option>
+
+        <option value="cotton">
+          Cotton
+        </option>
+
+        <option value="groundnut">
+          Groundnut
+        </option>
+
+        <option value="chickpea">
+          Chickpea
+        </option>
+
+        <option value="vegetables">
+          Vegetables
+        </option>
+
+      </select>
+
+
+      <label for="soil">
+        🪨 Soil Type
+      </label>
+
+      <select id="soil">
+
+        <option value="">
+          Select soil
+        </option>
+
+        <option value="sandy">
+          Sandy
+        </option>
+
+        <option value="loamy">
+          Loamy
+        </option>
+
+        <option value="clay">
+          Clay
+        </option>
+
+        <option value="black">
+          Black
+        </option>
+
+        <option value="red">
+          Red
+        </option>
+
+      </select>
+
+
+      <label for="stage">
+        🌱 Crop Growth Stage
+      </label>
+
+      <select id="stage">
+
+        <option value="">
+          Select growth stage
+        </option>
+
+        <option value="early">
+          Early / Establishment
+        </option>
+
+        <option value="vegetative">
+          Vegetative Growth
+        </option>
+
+        <option value="flowering">
+          Flowering
+        </option>
+
+        <option value="fruiting">
+          Fruiting / Grain Filling
+        </option>
+
+        <option value="maturity">
+          Maturity
+        </option>
+
+      </select>
+
+
+      <label for="water">
+        💧 Water Availability
+      </label>
+
+      <select id="water">
+
+        <option value="">
+          Select availability
+        </option>
+
+        <option value="low">
+          Low
+        </option>
+
+        <option value="medium">
+          Medium
+        </option>
+
+        <option value="high">
+          High
+        </option>
+
+      </select>
+
+
+      <label for="method">
+        🚿 Irrigation Method
+      </label>
+
+      <select id="method">
+
+        <option value="">
+          Select method
+        </option>
+
+        <option value="drip">
+          Drip Irrigation
+        </option>
+
+        <option value="sprinkler">
+          Sprinkler
+        </option>
+
+        <option value="furrow">
+          Furrow
+        </option>
+
+        <option value="flood">
+          Flood / Surface
+        </option>
+
+      </select>
+
+
+      <button class="btn" onclick="getAdvice()">
+        💧 Get Irrigation Advice
+      </button>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div class="card" id="result">
+
+      <div class="water-icon">
+        💧
+      </div>
+
+      <h2 class="result-title">
+        Irrigation Recommendation
+      </h2>
+
+
+      <div class="status" id="status">
+      </div>
+
+
+      <div class="result-box">
+
+        <strong>Recommended Approach</strong>
+
+        <p id="frequency"></p>
+
+      </div>
+
+
+      <div class="result-box">
+
+        <strong>Water Management</strong>
+
+        <p id="waterAdvice"></p>
+
+      </div>
+
+
+      <div class="result-box">
+
+        <strong>Best Practice</strong>
+
+        <ul class="tips" id="tips"></ul>
+
+      </div>
+
+
+      <div class="warning">
+
+        ⚠️ These are general recommendations.
+        Actual irrigation should depend on rainfall,
+        soil moisture, crop variety, local climate and
+        field conditions. Avoid irrigation when significant
+        rainfall is expected.
+
+      </div>
+
+    </div>
+
+
+    <button class="home-btn" onclick="goHome()">
+      🏠 Back to Home
+    </button>
+
+  </main>
+
+</div>
+
+
+<script>
+
+function getAdvice() {
+
+  const crop =
+    document.getElementById("crop").value;
+
+  const soil =
+    document.getElementById("soil").value;
+
+  const stage =
+    document.getElementById("stage").value;
+
+  const water =
+    document.getElementById("water").value;
+
+  const method =
+    document.getElementById("method").value;
+
+
+  if (!crop || !soil || !stage || !water || !method) {
+
+    alert("Please select all field details.");
+
+    return;
+  }
+
+
+  let frequency = "";
+  let waterAdvice = "";
+  let status = "";
+  let tips = [];
+
+
+  /* CROP-SPECIFIC GENERAL GUIDANCE */
+
+  if (crop === "paddy") {
+
+    frequency =
+      "Rice generally needs regular moisture management. " +
+      "Avoid unnecessary continuous flooding where locally appropriate.";
+
+    waterAdvice =
+      "Maintain suitable soil moisture and use field-specific " +
+      "water management rather than applying water automatically.";
+
+  }
+
+  else if (crop === "wheat") {
+
+    frequency =
+      "Wheat has important irrigation needs at specific growth stages. " +
+      "Prioritize irrigation according to local recommendations and soil moisture.";
+
+    waterAdvice =
+      "Monitor soil moisture and avoid excessive irrigation, especially " +
+      "on poorly drained fields.";
+
+  }
+
+  else if (crop === "maize") {
+
+    frequency =
+      "Maize needs adequate moisture during establishment, rapid growth " +
+      "and reproductive stages.";
+
+    waterAdvice =
+      "Maintain adequate soil moisture without prolonged waterlogging.";
+
+  }
+
+  else if (crop === "cotton") {
+
+    frequency =
+      "Cotton irrigation should be adjusted according to soil moisture, " +
+      "crop stage and rainfall.";
+
+    waterAdvice =
+      "Avoid excessive water and prolonged waterlogging.";
+
+  }
+
+  else if (crop === "groundnut") {
+
+    frequency =
+      "Groundnut requires careful moisture management, particularly " +
+      "during flowering and pod development.";
+
+    waterAdvice =
+      "Avoid both severe moisture stress and prolonged waterlogging.";
+
+  }
+
+  else if (crop === "chickpea") {
+
+    frequency =
+      "Chickpea generally has moderate water requirements and is sensitive " +
+      "to excessive moisture.";
+
+    waterAdvice =
+      "Avoid over-irrigation and waterlogging.";
+
+  }
+
+  else if (crop === "vegetables") {
+
+    frequency =
+      "Vegetables often benefit from smaller, more frequent irrigation " +
+      "depending on soil, weather and crop stage.";
+
+    waterAdvice =
+      "Keep moisture reasonably consistent and avoid prolonged saturation.";
+
+  }
+
+
+  /* SOIL ADJUSTMENT */
+
+  if (soil === "sandy") {
+
+    frequency +=
+      " Sandy soil usually drains quickly, so moisture should be monitored frequently.";
+
+  }
+
+  if (soil === "clay" || soil === "black") {
+
+    frequency +=
+      " Heavier soils can retain water longer, so check soil moisture before irrigating.";
+
+  }
+
+  if (soil === "loamy") {
+
+    frequency +=
+      " Loamy soil can provide a useful balance of drainage and moisture retention.";
+
+  }
+
+
+  /* WATER AVAILABILITY */
+
+  if (water === "low") {
+
+    status = "💧 Water Conservation Priority";
+
+    waterAdvice +=
+      " Since water availability is low, prioritize efficient irrigation " +
+      "and avoid unnecessary applications.";
+
+    tips.push(
+      "Check soil moisture before irrigation."
+    );
+
+    tips.push(
+      "Use efficient irrigation where practical."
+    );
+
+    tips.push(
+      "Consider mulching to reduce evaporation."
+    );
+
+  }
+
+  else if (water === "medium") {
+
+    status = "💧 Moderate Water Availability";
+
+    tips.push(
+      "Monitor soil moisture regularly."
+    );
+
+    tips.push(
+      "Adjust irrigation after rainfall."
+    );
+
+  }
+
+  else {
+
+    status = "💧 Adequate Water Availability";
+
+    tips.push(
+      "Do not irrigate simply because water is available."
+    );
+
+    tips.push(
+      "Monitor soil moisture and weather conditions."
+    );
+
+  }
+
+
+  /* GROWTH STAGE */
+
+  if (stage === "flowering" || stage === "fruiting") {
+
+    tips.push(
+      "Pay close attention to moisture during reproductive growth."
+    );
+
+  }
+
+  if (stage === "early") {
+
+    tips.push(
+      "Avoid allowing newly established plants to experience severe moisture stress."
+    );
+
+  }
+
+  if (stage === "maturity") {
+
+    tips.push(
+      "Review crop-specific irrigation needs as the crop approaches harvest."
+    );
+
+  }
+
+
+  /* IRRIGATION METHOD */
+
+  if (method === "drip") {
+
+    tips.push(
+      "Drip systems can deliver water close to the root zone efficiently."
+    );
+
+  }
+
+  else if (method === "sprinkler") {
+
+    tips.push(
+      "Operate sprinklers according to soil infiltration and weather conditions."
+    );
+
+  }
+
+  else if (method === "furrow") {
+
+    tips.push(
+      "Manage furrow irrigation carefully to reduce runoff and uneven application."
+    );
+
+  }
+
+  else if (method === "flood") {
+
+    tips.push(
+      "Avoid unnecessary flooding and monitor field drainage."
+    );
+
+  }
+
+
+  /* DISPLAY */
+
+  document.getElementById("status")
+    .textContent = status;
+
+  document.getElementById("frequency")
+    .textContent = frequency;
+
+  document.getElementById("waterAdvice")
+    .textContent = waterAdvice;
+
+
+  const tipList =
+    document.getElementById("tips");
+
+  tipList.innerHTML = "";
+
+  tips.forEach(function(tip) {
+
+    const li =
+      document.createElement("li");
+
+    li.textContent = tip;
+
+    tipList.appendChild(li);
+
+  });
+
+
+  document.getElementById("result")
+    .style.display = "block";
+
+
+  document.getElementById("result")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+
+function goHome() {
+
+  window.location.href = "home.html";
+
+}
+
+</script>
+
+</body>
+</html>
