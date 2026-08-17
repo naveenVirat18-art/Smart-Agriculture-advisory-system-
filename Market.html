@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Market Prices - Smart Agriculture</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#eef8ef;
+    color:#173b24;
+}
+
+.app{
+    max-width:500px;
+    margin:auto;
+    min-height:100vh;
+    padding-bottom:30px;
+}
+
+header{
+    background:linear-gradient(135deg,#087b35,#20a34a);
+    color:white;
+    padding:20px;
+    border-radius:0 0 28px 28px;
+}
+
+.back{
+    background:rgba(255,255,255,.2);
+    border:1px solid white;
+    color:white;
+    padding:9px 14px;
+    border-radius:9px;
+    font-size:15px;
+}
+
+header h1{
+    margin-top:20px;
+    font-size:25px;
+}
+
+header p{
+    margin-top:7px;
+}
+
+.content{
+    padding:18px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.card h2{
+    color:#087b35;
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin:12px 0 7px;
+}
+
+select,
+input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
+    background:white;
+}
+
+.btn{
+    width:100%;
+    border:none;
+    background:#087b35;
+    color:white;
+    padding:15px;
+    margin-top:15px;
+    border-radius:11px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.secondary{
+    background:white;
+    color:#087b35;
+    border:2px solid #087b35;
+}
+
+.update{
+    text-align:center;
+    color:#68756c;
+    font-size:13px;
+    margin-top:10px;
+}
+
+.price-card{
+    background:#f4faf5;
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+}
+
+.price-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.crop-name{
+    font-size:18px;
+    font-weight:bold;
+    color:#087b35;
+}
+
+.market-name{
+    color:#66716a;
+    font-size:13px;
+    margin-top:4px;
+}
+
+.price{
+    font-size:22px;
+    font-weight:bold;
+    color:#173b24;
+}
+
+.unit{
+    font-size:12px;
+    color:#68756c;
+}
+
+.price-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:7px;
+    margin-top:14px;
+}
+
+.price-box{
+    background:white;
+    padding:10px 5px;
+    text-align:center;
+    border-radius:9px;
+}
+
+.price-box small{
+    display:block;
+    color:#68756c;
+}
+
+.price-box strong{
+    display:block;
+    margin-top:4px;
+    color:#087b35;
+}
+
+.change-up{
+    color:#087b35;
+    font-weight:bold;
+}
+
+.change-down{
+    color:#b83232;
+    font-weight:bold;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:430px;
+}
+
+th,
+td{
+    padding:12px 8px;
+    border-bottom:1px solid #e2eae3;
+    text-align:left;
+    font-size:14px;
+}
+
+th{
+    background:#f1f8f2;
+    color:#087b35;
+}
+
+.notice{
+    background:#fff7dc;
+    color:#6b5900;
+    padding:15px;
+    border-radius:12px;
+    line-height:1.6;
+    font-size:13px;
+}
+
+.empty{
+    text-align:center;
+    color:#68756c;
+    padding:20px;
+}
+
+.loading{
+    text-align:center;
+    padding:20px;
+}
+
+.home-btn{
+    display:block;
+    margin:20px auto;
+    border:none;
+    background:transparent;
+    color:#087b35;
+    font-weight:bold;
+    font-size:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+
+<button class="back" onclick="goHome()">
+← Back
+</button>
+
+<h1>📈 Market Prices</h1>
+
+<p>Check crop prices in nearby markets</p>
+
+</header>
+
+
+<main class="content">
+
+
+<!-- SEARCH -->
+
+<div class="card">
+
+<h2>🔎 Find Market Price</h2>
+
+<label for="crop">
+Crop
+</label>
+
+<select id="crop">
+
+<option value="all">
+🌾 All Crops
+</option>
+
+<option value="rice">
+🌾 Rice
+</option>
+
+<option value="wheat">
+🌾 Wheat
+</option>
+
+<option value="maize">
+🌽 Maize
+</option>
+
+<option value="cotton">
+🌿 Cotton
+</option>
+
+<option value="tomato">
+🍅 Tomato
+</option>
+
+<option value="chilli">
+🌶️ Chilli
+</option>
+
+<option value="groundnut">
+🥜 Groundnut
+</option>
+
+<option value="sugarcane">
+🎋 Sugarcane
+</option>
+
+<option value="pulses">
+🌱 Pulses
+</option>
+
+</select>
+
+
+<label for="state">
+State
+</label>
+
+<select id="state">
+
+<option value="all">
+All States
+</option>
+
+<option value="andhra">
+Andhra Pradesh
+</option>
+
+<option value="telangana">
+Telangana
+</option>
+
+<option value="karnataka">
+Karnataka
+</option>
+
+<option value="tamilnadu">
+Tamil Nadu
+</option>
+
+<option value="maharashtra">
+Maharashtra
+</option>
+
+<option value="other">
+Other
+</option>
+
+</select>
+
+
+<label for="market">
+Market / Mandi
+</label>
+
+<input
+id="market"
+type="text"
+placeholder="Example: Guntur">
+
+
+<button
+class="btn"
+onclick="searchPrices()">
+
+🔍 Search Prices
+
+</button>
+
+
+<button
+class="btn secondary"
+onclick="showAllPrices()">
+
+📊 Show All Prices
+
+</button>
+
+<div
+id="updateTime"
+class="update">
+</div>
+
+</div>
+
+
+<!-- PRICE RESULT -->
+
+<div class="card">
+
+<h2>💰 Market Prices</h2>
+
+<div id="priceResults">
+
+<div class="empty">
+Select a crop and search to see prices.
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PRICE TABLE -->
+
+<div class="card">
+
+<h2>📋 Price Details</h2>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Crop</th>
+
+<th>Market</th>
+
+<th>Min</th>
+
+<th>Max</th>
+
+<th>Average</th>
+
+</tr>
+
+</thead>
+
+<tbody id="priceTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- FARMER TIP -->
+
+<div class="card">
+
+<h2>💡 Farmer Tip</h2>
+
+<div class="notice">
+
+📊 Compare prices from more than one nearby market before deciding where to sell.
+
+<br><br>
+
+🚜 Remember that transportation, quality, grade, commission and other market costs can affect the final amount received by the farmer.
+
+<br><br>
+
+⚠️ Always verify the latest official market price before making a selling decision.
+
+</div>
+
+</div>
+
+
+<!-- HOME -->
+
+<button
+class="home-btn"
+onclick="goHome()">
+
+🏠 Back to Home
+
+</button>
+
+</main>
+
+</div>
+
+
+<script>
+
+/*
+========================================
+SAMPLE MARKET DATA
+========================================
+
+IMPORTANT:
+These values are DEMO data for the UI.
+
+For production, replace this data with
+a trusted live market-price API/backend.
+*/
+
+const marketData = [
+
+{
+crop:"rice",
+cropName:"🌾 Rice",
+state:"andhra",
+market:"Guntur",
+min:2100,
+max:2450,
+avg:2280,
+change:4
+},
+
+{
+crop:"rice",
+cropName:"🌾 Rice",
+state:"telangana",
+market:"Warangal",
+min:2050,
+max:2380,
+avg:2210,
+change:2
+},
+
+{
+crop:"wheat",
+cropName:"🌾 Wheat",
+state:"maharashtra",
+market:"Nagpur",
+min:2200,
+max:2550,
+avg:2380,
+change:-2
+},
+
+{
+crop:"maize",
+cropName:"🌽 Maize",
+state:"andhra",
+market:"Guntur",
+min:1800,
+max:2150,
+avg:1980,
+change:5
+},
+
+{
+crop:"maize",
+cropName:"🌽 Maize",
+state:"karnataka",
+market:"Davangere",
+min:1750,
+max:2100,
+avg:1930,
+change:3
+},
+
+{
+crop:"cotton",
+cropName:"🌿 Cotton",
+state:"telangana",
+market:"Adilabad",
+min:6500,
+max:7200,
+avg:6860,
+change:2
+},
+
+{
+crop:"cotton",
+cropName:"🌿 Cotton",
+state:"maharashtra",
+market:"Akola",
+min:6600,
+max:7350,
+avg:6990,
+change:-1
+},
+
+{
+crop:"tomato",
+cropName:"🍅 Tomato",
+state:"andhra",
+market:"Madanapalle",
+min:1800,
+max:2800,
+avg:2300,
+change:8
+},
+
+{
+crop:"tomato",
+cropName:"🍅 Tomato",
+state:"karnataka",
+market:"Kolar",
+min:1700,
+max:2600,
+avg:2180,
+change:-4
+},
+
+{
+crop:"chilli",
+cropName:"🌶️ Chilli",
+state:"andhra",
+market:"Guntur",
+min:8500,
+max:11500,
+avg:9800,
+change:6
+},
+
+{
+crop:"groundnut",
+cropName:"🥜 Groundnut",
+state:"andhra",
+market:"Anantapur",
+min:5200,
+max:6100,
+avg:5650,
+change:3
+},
+
+{
+crop:"sugarcane",
+cropName:"🎋 Sugarcane",
+state:"karnataka",
+market:"Belagavi",
+min:3100,
+max:3600,
+avg:3350,
+change:1
+},
+
+{
+crop:"pulses",
+cropName:"🌱 Pulses",
+state:"andhra",
+market:"Kurnool",
+min:5800,
+max:6700,
+avg:6250,
+change:4
+}
+
+];
+
+
+/*
+========================================
+SEARCH
+========================================
+*/
+
+function searchPrices(){
+
+const crop =
+document.getElementById(
+"crop"
+).value;
+
+const state =
+document.getElementById(
+"state"
+).value;
+
+const market =
+document.getElementById(
+"market"
+).value
+.trim()
+.toLowerCase();
+
+
+let results =
+marketData.filter(item => {
+
+const cropMatch =
+crop === "all" ||
+item.crop === crop;
+
+const stateMatch =
+state === "all" ||
+item.state === state;
+
+const marketMatch =
+!market ||
+item.market
+.toLowerCase()
+.includes(market);
+
+return (
+cropMatch &&
+stateMatch &&
+marketMatch
+);
+
+});
+
+
+displayResults(results);
+
+}
+
+
+/*
+========================================
+SHOW ALL
+========================================
+*/
+
+function showAllPrices(){
+
+document.getElementById(
+"crop"
+).value = "all";
+
+document.getElementById(
+"state"
+).value = "all";
+
+document.getElementById(
+"market"
+).value = "";
+
+displayResults(
+marketData
+);
+
+}
+
+
+/*
+========================================
+DISPLAY RESULTS
+========================================
+*/
+
+function displayResults(results){
+
+const container =
+document.getElementById(
+"priceResults"
+);
+
+const table =
+document.getElementById(
+"priceTable"
+);
+
+
+container.innerHTML = "";
+
+table.innerHTML = "";
+
+
+if(results.length === 0){
+
+container.innerHTML = `
+
+<div class="empty">
+
+❌ No market found.
+
+<br><br>
+
+Try another crop, state or market.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+results.forEach(item => {
+
+
+/*
+PRICE CARD
+*/
+
+const card =
+document.createElement(
+"div"
+);
+
+card.className =
+"price-card";
+
+
+let changeText =
+"";
+
+let changeClass =
+"";
+
+
+if(item.change > 0){
+
+changeText =
+"▲ " + item.change + "%";
+
+changeClass =
+"change-up";
+
+}
+else if(item.change < 0){
+
+changeText =
+"▼ " +
+Math.abs(item.change) +
+"%";
+
+changeClass =
+"change-down";
+
+}
+else{
+
+changeText =
+"— 0%";
+
+}
+
+
+card.innerHTML = `
+
+<div class="price-top">
+
+<div>
+
+<div class="crop-name">
+${item.cropName}
+</div>
+
+<div class="market-name">
+📍 ${item.market}
+</div>
+
+</div>
+
+<div>
+
+<div class="price">
+₹${item.avg.toLocaleString("en-IN")}
+</div>
+
+<div class="unit">
+Average / Quintal
+</div>
+
+</div>
+
+</div>
+
+
+<div class="price-grid">
+
+<div class="price-box">
+
+<small>Minimum</small>
+
+<strong>
+₹${item.min.toLocaleString("en-IN")}
+</strong>
+
+</div>
+
+
+<div class="price-box">
+
+<small>Maximum</small>
+
+<strong>
+₹${item.max.toLocaleString("en-IN")}
+</strong>
+
+</div>
+
+
+<div class="price-box">
+
+<small>Change</small>
+
+<strong class="${changeClass}">
+${changeText}
+</strong>
+
+</div>
+
+</div>
+
+`;
+
+
+container.appendChild(card);
+
+
+/*
+TABLE
+*/
+
+const row =
+document.createElement(
+"tr"
+);
+
+row.innerHTML = `
+
+<td>
+${item.cropName}
+</td>
+
+<td>
+${item.market}
+</td>
+
+<td>
+₹${item.min.toLocaleString("en-IN")}
+</td>
+
+<td>
+₹${item.max.toLocaleString("en-IN")}
+</td>
+
+<td>
+₹${item.avg.toLocaleString("en-IN")}
+</td>
+
+`;
+
+table.appendChild(row);
+
+});
+
+
+/*
+UPDATE TIME
+*/
+
+const now =
+new Date();
+
+
+document.getElementById(
+"updateTime"
+).textContent =
+
+"Displayed at " +
+
+now.toLocaleTimeString(
+"en-IN",
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+);
+
+}
+
+
+/*
+========================================
+HOME
+========================================
+*/
+
+function goHome(){
+
+window.location.href =
+"home.html";
+
+}
+
+
+/*
+========================================
+START
+========================================
+*/
+
+showAllPrices();
+
+</script>
+
+</body>
+</html>
