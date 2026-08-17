@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pest & Disease - Smart Agriculture</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#eef8ef;
+    color:#173b24;
+}
+
+.app{
+    max-width:500px;
+    margin:auto;
+    min-height:100vh;
+    padding-bottom:30px;
+}
+
+/* HEADER */
+
+header{
+    background:linear-gradient(135deg,#087b35,#20a34a);
+    color:white;
+    padding:20px;
+    border-radius:0 0 28px 28px;
+}
+
+.back{
+    background:rgba(255,255,255,.2);
+    border:1px solid white;
+    color:white;
+    padding:9px 14px;
+    border-radius:9px;
+    font-size:15px;
+}
+
+header h1{
+    margin-top:20px;
+    font-size:25px;
+}
+
+header p{
+    margin-top:7px;
+}
+
+/* CONTENT */
+
+.content{
+    padding:18px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.card h2{
+    color:#087b35;
+    margin-bottom:15px;
+}
+
+/* INPUT */
+
+label{
+    display:block;
+    font-weight:bold;
+    margin:13px 0 7px;
+}
+
+select,
+input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
+    background:white;
+}
+
+/* BUTTON */
+
+.btn{
+    width:100%;
+    border:none;
+    background:#087b35;
+    color:white;
+    padding:15px;
+    margin-top:15px;
+    border-radius:11px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.photo-btn{
+    background:#1769aa;
+}
+
+.secondary{
+    background:white;
+    color:#087b35;
+    border:2px solid #087b35;
+}
+
+/* PHOTO */
+
+.upload-box{
+    border:2px dashed #9bc5a5;
+    border-radius:14px;
+    padding:25px 15px;
+    text-align:center;
+    background:#f7fcf8;
+}
+
+.upload-icon{
+    font-size:48px;
+    margin-bottom:10px;
+}
+
+#preview{
+    width:100%;
+    max-height:280px;
+    object-fit:contain;
+    border-radius:12px;
+    margin-top:15px;
+    display:none;
+}
+
+/* RESULT */
+
+.result{
+    display:none;
+}
+
+.result-title{
+    font-size:20px;
+    font-weight:bold;
+    color:#087b35;
+    margin-bottom:10px;
+}
+
+.status{
+    display:inline-block;
+    padding:7px 12px;
+    border-radius:20px;
+    background:#fff3cd;
+    color:#705700;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.info-box{
+    background:#f1f9f2;
+    padding:15px;
+    border-radius:12px;
+    line-height:1.6;
+    margin-top:10px;
+}
+
+.info-box strong{
+    color:#087b35;
+}
+
+/* PEST LIST */
+
+.pest-list{
+    display:grid;
+    gap:10px;
+}
+
+.pest-item{
+    background:#f5faf6;
+    padding:15px;
+    border-radius:12px;
+    cursor:pointer;
+    border:1px solid #e0eee2;
+}
+
+.pest-item:hover{
+    border-color:#087b35;
+}
+
+.pest-item h3{
+    color:#087b35;
+    margin-bottom:5px;
+}
+
+.pest-item p{
+    font-size:13px;
+    color:#59655d;
+}
+
+/* WARNING */
+
+.warning{
+    background:#fff7dc;
+    color:#6b5900;
+    padding:15px;
+    border-radius:12px;
+    line-height:1.6;
+    font-size:13px;
+}
+
+/* HOME */
+
+.home-btn{
+    display:block;
+    margin:20px auto;
+    border:none;
+    background:transparent;
+    color:#087b35;
+    font-weight:bold;
+    font-size:15px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<!-- HEADER -->
+
+<header>
+
+<button
+class="back"
+onclick="goHome()">
+
+← Back
+
+</button>
+
+<h1>🐛 Pest & Disease</h1>
+
+<p>Basic crop pest and disease guidance</p>
+
+</header>
+
+
+<main class="content">
+
+
+<!-- IDENTIFICATION -->
+
+<div class="card">
+
+<h2>🔎 Identify Problem</h2>
+
+<label for="crop">
+Select Crop
+</label>
+
+<select id="crop">
+
+<option value="">
+-- Select Crop --
+</option>
+
+<option value="rice">
+🌾 Rice
+</option>
+
+<option value="wheat">
+🌾 Wheat
+</option>
+
+<option value="maize">
+🌽 Maize
+</option>
+
+<option value="cotton">
+🌿 Cotton
+</option>
+
+<option value="tomato">
+🍅 Tomato
+</option>
+
+<option value="chilli">
+🌶️ Chilli
+</option>
+
+<option value="groundnut">
+🥜 Groundnut
+</option>
+
+<option value="sugarcane">
+🎋 Sugarcane
+</option>
+
+<option value="pulses">
+🌱 Pulses
+</option>
+
+</select>
+
+
+<label for="problem">
+
+Select Problem
+
+</label>
+
+<select id="problem">
+
+<option value="">
+-- Select Problem --
+</option>
+
+<option value="aphids">
+🐜 Aphids
+</option>
+
+<option value="caterpillar">
+🐛 Caterpillar
+</option>
+
+<option value="stem_borer">
+🪲 Stem Borer
+</option>
+
+<option value="whitefly">
+🦟 Whitefly
+</option>
+
+<option value="thrips">
+🦟 Thrips
+</option>
+
+<option value="leaf_spot">
+🍃 Leaf Spot
+</option>
+
+<option value="blight">
+🍂 Blight
+</option>
+
+<option value="powdery_mildew">
+🍄 Powdery Mildew
+</option>
+
+</select>
+
+
+<button
+class="btn"
+onclick="identifyProblem()">
+
+🔍 Get Guidance
+
+</button>
+
+</div>
+
+
+<!-- PHOTO -->
+
+<div class="card">
+
+<h2>📷 Upload Crop Photo</h2>
+
+<div class="upload-box">
+
+<div class="upload-icon">
+📸
+</div>
+
+<p>
+Take a clear photo of the affected leaf,
+stem or fruit.
+</p>
+
+
+<input
+id="photoInput"
+type="file"
+accept="image/*"
+capture="environment"
+style="display:none"
+onchange="previewPhoto(event)">
+
+
+<button
+class="btn photo-btn"
+onclick="document.getElementById('photoInput').click()">
+
+📷 Take / Select Photo
+
+</button>
+
+
+<img
+id="preview"
+alt="Crop photo preview">
+
+</div>
+
+<p
+style="font-size:12px;
+color:#68756c;
+margin-top:12px;">
+
+Photo identification requires an AI/backend
+model. This screen currently provides the
+photo upload interface.
+
+</p>
+
+</div>
+
+
+<!-- RESULT -->
+
+<div
+id="result"
+class="card result">
+
+<h2>🌱 Result</h2>
+
+<div
+id="resultTitle"
+class="result-title">
+</div>
+
+<div
+id="status"
+class="status">
+Basic Guidance
+</div>
+
+<div
+id="symptoms"
+class="info-box">
+</div>
+
+<div
+id="prevention"
+class="info-box">
+</div>
+
+<div
+id="management"
+class="info-box">
+</div>
+
+</div>
+
+
+<!-- COMMON PROBLEMS -->
+
+<div class="card">
+
+<h2>🐛 Common Problems</h2>
+
+<div class="pest-list">
+
+
+<div
+class="pest-item"
+onclick="selectProblem('aphids')">
+
+<h3>🐜 Aphids</h3>
+
+<p>
+Small insects that suck plant sap,
+often found on young leaves.
+</p>
+
+</div>
+
+
+<div
+class="pest-item"
+onclick="selectProblem('caterpillar')">
+
+<h3>🐛 Caterpillar</h3>
+
+<p>
+Leaves may have holes or edges
+may be eaten.
+</p>
+
+</div>
+
+
+<div
+class="pest-item"
+onclick="selectProblem('stem_borer')">
+
+<h3>🪲 Stem Borer</h3>
+
+<p>
+Damage inside stems can cause
+wilting or dead central shoots.
+</p>
+
+</div>
+
+
+<div
+class="pest-item"
+onclick="selectProblem('whitefly')">
+
+<h3>🦟 Whitefly</h3>
+
+<p>
+Small white insects may fly from
+the underside of leaves.
+</p>
+
+</div>
+
+
+<div
+class="pest-item"
+onclick="selectProblem('thrips')">
+
+<h3>🦟 Thrips</h3>
+
+<p>
+Leaves may show silvery patches,
+distortion or curling.
+</p>
+
+</div>
+
+
+<div
+class="pest-item"
+onclick="selectProblem('leaf_spot')">
+
+<h3>🍃 Leaf Spot</h3>
+
+<p>
+Brown, black or yellow spots
+may appear on leaves.
+</p>
+
+</div>
+
+
+<div
+class="pest-item"
+onclick="selectProblem('blight')">
+
+<h3>🍂 Blight</h3>
+
+<p>
+Rapid browning or drying of
+leaves may occur.
+</p>
+
+</div>
+
+
+<div
+class="pest-item"
+onclick="selectProblem('powdery_mildew')">
+
+<h3>🍄 Powdery Mildew</h3>
+
+<p>
+White powder-like growth may
+appear on leaves.
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- SAFETY -->
+
+<div class="warning">
+
+⚠️ <b>Important:</b>
+This page provides basic identification
+and prevention guidance. Do not apply
+a pesticide only from a photo or this
+page. For chemical treatment, follow
+the crop label, local agricultural
+recommendations and required safety
+instructions.
+
+</div>
+
+
+<button
+class="home-btn"
+onclick="goHome()">
+
+🏠 Back to Home
+
+</button>
+
+
+</main>
+
+</div>
+
+
+<script>
+
+
+/* =====================================
+   PROBLEM DATABASE
+===================================== */
+
+const problems = {
+
+
+aphids: {
+
+name:"Aphids",
+
+symptoms:
+
+"🐜 Small soft-bodied insects may cluster on young leaves and shoots. Leaves may curl, become distorted or show sticky honeydew.",
+
+prevention:
+
+"🌱 Regularly inspect young shoots and the underside of leaves. Encourage beneficial insects and avoid unnecessary broad-spectrum insecticide use.",
+
+management:
+
+"🔎 Confirm the pest before treatment. Remove heavily affected plant parts where practical and use locally recommended management methods."
+
+},
+
+
+caterpillar: {
+
+name:"Caterpillar",
+
+symptoms:
+
+"🐛 Leaves may have holes, chewed edges or missing portions. Caterpillars or droppings may be visible on the plant.",
+
+prevention:
+
+"🌱 Inspect plants regularly, especially young foliage. Remove visible caterpillars when practical and maintain field sanitation.",
+
+management:
+
+"🔎 Check the crop carefully and identify the caterpillar before choosing a control method. Follow locally approved crop-specific recommendations."
+
+},
+
+
+stem_borer: {
+
+name:"Stem Borer",
+
+symptoms:
+
+"🪲 Larvae may feed inside stems. Symptoms can include wilting, dead central shoots or weakened stems depending on the crop.",
+
+prevention:
+
+"🌱 Monitor the crop regularly and remove severely affected plant material where appropriate. Follow recommended crop management practices.",
+
+management:
+
+"🔎 Confirm stem-borer damage and use an integrated pest-management approach recommended for the specific crop and region."
+
+},
+
+
+whitefly: {
+
+name:"Whitefly",
+
+symptoms:
+
+"🦟 Small white insects may fly when leaves are disturbed. Leaves can become yellow or weakened and sticky honeydew may occur.",
+
+prevention:
+
+"🌱 Inspect the underside of leaves. Remove heavily affected leaves where appropriate and encourage natural enemies.",
+
+management:
+
+"🔎 Confirm whiteflies before treatment. Use crop-specific integrated pest management and locally approved products if needed."
+
+},
+
+
+thrips: {
+
+name:"Thrips",
+
+symptoms:
+
+"🦟 Leaves or flowers may show silvery patches, distortion, curling or scarring.",
+
+prevention:
+
+"🌱 Regularly inspect flowers and young leaves. Keep weeds and alternate host plants under control where appropriate.",
+
+management:
+
+"🔎 Confirm thrips damage and follow crop-specific integrated pest-management recommendations."
+
+},
+
+
+leaf_spot: {
+
+name:"Leaf Spot",
+
+symptoms:
+
+"🍃 Brown, black, yellow or reddish spots may appear on leaves. Spots can sometimes enlarge and cause leaf drying.",
+
+prevention:
+
+"🌱 Avoid unnecessary leaf wetness, maintain good field sanitation and remove severely diseased material where recommended.",
+
+management:
+
+"🔎 Many diseases can cause leaf spots. Identify the crop and disease accurately before using a fungicide."
+
+},
+
+
+blight: {
+
+name:"Blight",
+
+symptoms:
+
+"🍂 Leaves may develop rapidly spreading brown or dark areas and may dry prematurely.",
+
+prevention:
+
+"🌱 Use healthy planting material, maintain appropriate spacing and avoid excessive moisture where applicable.",
+
+management:
+
+"🔎 Blight symptoms vary by crop. Confirm the disease and follow local crop-specific recommendations."
+
+},
+
+
+powdery_mildew: {
+
+name:"Powdery Mildew",
+
+symptoms:
+
+"🍄 White powder-like growth may appear on the surface of leaves, shoots or other plant parts.",
+
+prevention:
+
+"🌱 Maintain good airflow around plants and avoid conditions that encourage prolonged humidity.",
+
+management:
+
+"🔎 Confirm the disease before treatment and follow locally recommended crop-specific management."
+
+}
+
+};
+
+
+/* =====================================
+   IDENTIFY
+===================================== */
+
+function identifyProblem(){
+
+const crop =
+document.getElementById("crop")
+.value;
+
+const problem =
+document.getElementById("problem")
+.value;
+
+
+if(!crop){
+
+alert(
+"Please select your crop."
+);
+
+return;
+
+}
+
+
+if(!problem){
+
+alert(
+"Please select the pest or disease."
+);
+
+return;
+
+}
+
+
+showResult(problem);
+
+}
+
+
+/* =====================================
+   SHOW RESULT
+===================================== */
+
+function showResult(problem){
+
+const data =
+problems[problem];
+
+
+if(!data){
+
+return;
+
+}
+
+
+document.getElementById(
+"result"
+).style.display="block";
+
+
+document.getElementById(
+"resultTitle"
+).textContent =
+"🐛 " + data.name;
+
+
+document.getElementById(
+"symptoms"
+).innerHTML =
+
+"<strong>🔎 Symptoms</strong><br>" +
+data.symptoms;
+
+
+document.getElementById(
+"prevention"
+).innerHTML =
+
+"<strong>🛡️ Prevention</strong><br>" +
+data.prevention;
+
+
+document.getElementById(
+"management"
+).innerHTML =
+
+"<strong>🌱 Basic Management</strong><br>" +
+data.management;
+
+
+document.getElementById(
+"result"
+).scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+
+/* =====================================
+   QUICK PROBLEM SELECT
+===================================== */
+
+function selectProblem(problem){
+
+document.getElementById(
+"problem"
+).value =
+problem;
+
+showResult(problem);
+
+}
+
+
+/* =====================================
+   PHOTO PREVIEW
+===================================== */
+
+function previewPhoto(event){
+
+const file =
+event.target.files[0];
+
+
+if(!file){
+
+return;
+
+}
+
+
+if(!file.type.startsWith("image/")){
+
+alert(
+"Please select an image."
+);
+
+return;
+
+}
+
+
+const reader =
+new FileReader();
+
+
+reader.onload =
+function(e){
+
+const preview =
+document.getElementById(
+"preview"
+);
+
+preview.src =
+e.target.result;
+
+preview.style.display =
+"block";
+
+};
+
+
+reader.readAsDataURL(file);
+
+}
+
+
+/* =====================================
+   HOME
+===================================== */
+
+function goHome(){
+
+window.location.href =
+"home.html";
+
+}
+
+</script>
+
+</body>
+  </html>
