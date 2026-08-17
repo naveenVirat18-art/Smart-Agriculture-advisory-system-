@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Crop Management - Smart Agriculture</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#eef8ef;
+    color:#173b24;
+}
+
+.app{
+    max-width:500px;
+    margin:auto;
+    min-height:100vh;
+    padding-bottom:30px;
+}
+
+header{
+    background:linear-gradient(135deg,#087b35,#20a34a);
+    color:white;
+    padding:20px;
+    border-radius:0 0 28px 28px;
+}
+
+.back{
+    background:rgba(255,255,255,.2);
+    border:1px solid white;
+    color:white;
+    padding:9px 14px;
+    border-radius:9px;
+    font-size:15px;
+}
+
+header h1{
+    margin-top:20px;
+    font-size:25px;
+}
+
+header p{
+    margin-top:7px;
+}
+
+.content{
+    padding:18px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.card h2{
+    color:#087b35;
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin:12px 0 7px;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
+    background:white;
+}
+
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.btn{
+    width:100%;
+    border:none;
+    background:#087b35;
+    color:white;
+    padding:15px;
+    margin-top:15px;
+    border-radius:11px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.blue{
+    background:#1769aa;
+}
+
+.orange{
+    background:#d98200;
+}
+
+.red{
+    background:#b83232;
+}
+
+.secondary{
+    background:white;
+    color:#087b35;
+    border:2px solid #087b35;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.summary-box{
+    background:#f2f9f3;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.summary-icon{
+    font-size:28px;
+}
+
+.summary-box strong{
+    display:block;
+    color:#087b35;
+    margin-top:5px;
+}
+
+.task{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px;
+    margin-bottom:10px;
+    background:#f5faf6;
+    border-radius:12px;
+}
+
+.task input{
+    width:22px;
+    height:22px;
+}
+
+.task-text{
+    flex:1;
+}
+
+.task-text strong{
+    display:block;
+    color:#087b35;
+}
+
+.task-text small{
+    color:#66716a;
+}
+
+.activity{
+    border-left:4px solid #087b35;
+    background:#f4faf5;
+    padding:13px;
+    margin-bottom:10px;
+    border-radius:0 10px 10px 0;
+}
+
+.activity-date{
+    font-size:12px;
+    color:#68756c;
+    margin-bottom:5px;
+}
+
+.empty{
+    text-align:center;
+    color:#68756c;
+    padding:15px;
+}
+
+.notice{
+    background:#fff7dc;
+    color:#6b5900;
+    padding:15px;
+    border-radius:12px;
+    line-height:1.6;
+    font-size:13px;
+}
+
+.home-btn{
+    display:block;
+    margin:20px auto;
+    border:none;
+    background:transparent;
+    color:#087b35;
+    font-weight:bold;
+    font-size:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+
+<button class="back" onclick="goHome()">
+← Back
+</button>
+
+<h1>📊 Crop Management</h1>
+
+<p>Manage your farm activities and crop growth</p>
+
+</header>
+
+
+<main class="content">
+
+
+<!-- CROP INFORMATION -->
+
+<div class="card">
+
+<h2>🌱 My Crop</h2>
+
+<label for="crop">
+Crop
+</label>
+
+<select id="crop">
+
+<option value="">
+-- Select Crop --
+</option>
+
+<option>🌾 Rice</option>
+<option>🌾 Wheat</option>
+<option>🌽 Maize</option>
+<option>🌿 Cotton</option>
+<option>🍅 Tomato</option>
+<option>🌶️ Chilli</option>
+<option>🥜 Groundnut</option>
+<option>🎋 Sugarcane</option>
+<option>🌱 Pulses</option>
+
+</select>
+
+
+<label for="stage">
+Current Crop Stage
+</label>
+
+<select id="stage">
+
+<option value="">
+-- Select Stage --
+</option>
+
+<option>🌱 Land Preparation</option>
+<option>🌿 Seedling</option>
+<option>🌱 Vegetative Growth</option>
+<option>🌼 Flowering</option>
+<option>🫘 Fruiting / Grain Filling</option>
+<option>🌾 Maturity</option>
+<option>🚜 Harvest</option>
+
+</select>
+
+
+<label for="sowingDate">
+Sowing / Planting Date
+</label>
+
+<input
+id="sowingDate"
+type="date">
+
+
+<button
+class="btn"
+onclick="saveCrop()">
+
+💾 Save Crop Information
+
+</button>
+
+</div>
+
+
+<!-- SUMMARY -->
+
+<div class="card">
+
+<h2>📋 Farm Summary</h2>
+
+<div class="summary">
+
+<div class="summary-box">
+
+<div class="summary-icon">
+🌱
+</div>
+
+Crop
+
+<strong id="summaryCrop">
+Not Set
+</strong>
+
+</div>
+
+
+<div class="summary-box">
+
+<div class="summary-icon">
+📅
+</div>
+
+Stage
+
+<strong id="summaryStage">
+Not Set
+</strong>
+
+</div>
+
+
+<div class="summary-box">
+
+<div class="summary-icon">
+💧
+</div>
+
+Water
+
+<strong>
+Check
+</strong>
+
+</div>
+
+
+<div class="summary-box">
+
+<div class="summary-icon">
+🐛
+</div>
+
+Pest
+
+<strong>
+Monitor
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- TODAY'S TASKS -->
+
+<div class="card">
+
+<h2>✅ Today's Farm Tasks</h2>
+
+
+<div class="task">
+
+<input
+type="checkbox"
+id="task1"
+onchange="saveTasks()">
+
+<div class="task-text">
+
+<strong>
+💧 Check Soil Moisture
+</strong>
+
+<small>
+Check before irrigation.
+</small>
+
+</div>
+
+</div>
+
+
+<div class="task">
+
+<input
+type="checkbox"
+id="task2"
+onchange="saveTasks()">
+
+<div class="task-text">
+
+<strong>
+🌱 Inspect Crop
+</strong>
+
+<small>
+Check leaves, stems and growth.
+</small>
+
+</div>
+
+</div>
+
+
+<div class="task">
+
+<input
+type="checkbox"
+id="task3"
+onchange="saveTasks()">
+
+<div class="task-text">
+
+<strong>
+🐛 Check for Pests
+</strong>
+
+<small>
+Inspect both sides of leaves.
+</small>
+
+</div>
+
+</div>
+
+
+<div class="task">
+
+<input
+type="checkbox"
+id="task4"
+onchange="saveTasks()">
+
+<div class="task-text">
+
+<strong>
+🌦️ Check Weather
+</strong>
+
+<small>
+Check rain and temperature before field work.
+</small>
+
+</div>
+
+</div>
+
+
+<div class="task">
+
+<input
+type="checkbox"
+id="task5"
+onchange="saveTasks()">
+
+<div class="task-text">
+
+<strong>
+🧪 Check Fertilizer Plan
+</strong>
+
+<small>
+Follow your soil-test-based recommendation.
+</small>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- QUICK ACTIONS -->
+
+<div class="card">
+
+<h2>🚜 Farm Tools</h2>
+
+
+<button
+class="btn blue"
+onclick="openPage('weather.html')">
+
+🌦️ Weather Advisory
+
+</button>
+
+
+<button
+class="btn"
+onclick="openPage('irrigation.html')">
+
+💧 Irrigation
+
+</button>
+
+
+<button
+class="btn orange"
+onclick="openPage('fertilizer.html')">
+
+🧪 Fertilizer Recommendation
+
+</button>
+
+
+<button
+class="btn red"
+onclick="openPage('pest.html')">
+
+🐛 Pest & Disease
+
+</button>
+
+</div>
+
+
+<!-- ADD ACTIVITY -->
+
+<div class="card">
+
+<h2>📝 Add Farm Activity</h2>
+
+<label for="activityType">
+Activity
+</label>
+
+<select id="activityType">
+
+<option value="">
+-- Select Activity --
+</option>
+
+<option>🌱 Sowing / Planting</option>
+<option>💧 Irrigation</option>
+<option>🧪 Fertilizer Applied</option>
+<option>🐛 Pest Observed</option>
+<option>🦠 Disease Observed</option>
+<option>🌿 Weeding</option>
+<option>🚜 Harvest</option>
+<option>📝 Other</option>
+
+</select>
+
+
+<label for="activityDate">
+Date
+</label>
+
+<input
+id="activityDate"
+type="date">
+
+
+<label for="activityNotes">
+Notes
+</label>
+
+<textarea
+id="activityNotes"
+placeholder="Enter details about your farm activity...">
+</textarea>
+
+
+<button
+class="btn"
+onclick="addActivity()">
+
+➕ Add Activity
+
+</button>
+
+</div>
+
+
+<!-- ACTIVITY HISTORY -->
+
+<div class="card">
+
+<h2>📜 Activity History</h2>
+
+<div id="activityList">
+
+<div class="empty">
+No farm activities recorded yet.
+</div>
+
+</div>
+
+
+<button
+class="btn secondary"
+onclick="clearActivities()">
+
+🗑️ Clear Activity History
+
+</button>
+
+</div>
+
+
+<!-- IMPORTANT NOTICE -->
+
+<div class="notice">
+
+⚠️ <b>Important:</b>
+Crop management recommendations depend on
+crop variety, growth stage, soil, climate,
+water availability and local conditions.
+Use soil-test results and local agricultural
+advice when making fertilizer and pesticide
+decisions.
+
+</div>
+
+
+<button
+class="home-btn"
+onclick="goHome()">
+
+🏠 Back to Home
+
+</button>
+
+</main>
+
+</div>
+
+
+<script>
+
+/* =====================================
+   HOME
+===================================== */
+
+function goHome(){
+
+window.location.href =
+"home.html";
+
+}
+
+
+/* =====================================
+   OPEN PAGE
+===================================== */
+
+function openPage(page){
+
+window.location.href =
+page;
+
+}
+
+
+/* =====================================
+   DEFAULT DATE
+===================================== */
+
+const today =
+new Date()
+.toISOString()
+.split("T")[0];
+
+document.getElementById(
+"sowingDate"
+).max = today;
+
+document.getElementById(
+"activityDate"
+).value = today;
+
+
+/* =====================================
+   SAVE CROP
+===================================== */
+
+function saveCrop(){
+
+const crop =
+document.getElementById(
+"crop"
+).value;
+
+const stage =
+document.getElementById(
+"stage"
+).value;
+
+const sowingDate =
+document.getElementById(
+"sowingDate"
+).value;
+
+
+if(!crop){
+
+alert(
+"Please select your crop."
+);
+
+return;
+
+}
+
+
+if(!stage){
+
+alert(
+"Please select the current crop stage."
+);
+
+return;
+
+}
+
+
+localStorage.setItem(
+"farmCrop",
+crop
+);
+
+localStorage.setItem(
+"farmStage",
+stage
+);
+
+localStorage.setItem(
+"sowingDate",
+sowingDate
+);
+
+
+updateSummary();
+
+
+alert(
+"✅ Crop information saved."
+);
+
+}
+
+
+/* =====================================
+   UPDATE SUMMARY
+===================================== */
+
+function updateSummary(){
+
+const crop =
+localStorage.getItem(
+"farmCrop"
+);
+
+const stage =
+localStorage.getItem(
+"farmStage"
+);
+
+
+if(crop){
+
+document.getElementById(
+"summaryCrop"
+).textContent =
+crop;
+
+}
+
+
+if(stage){
+
+document.getElementById(
+"summaryStage"
+).textContent =
+stage;
+
+}
+
+}
+
+
+/* =====================================
+   LOAD CROP
+===================================== */
+
+function loadCrop(){
+
+const crop =
+localStorage.getItem(
+"farmCrop"
+);
+
+const stage =
+localStorage.getItem(
+"farmStage"
+);
+
+const sowingDate =
+localStorage.getItem(
+"sowingDate"
+);
+
+
+if(crop){
+
+document.getElementById(
+"crop"
+).value =
+crop;
+
+}
+
+
+if(stage){
+
+document.getElementById(
+"stage"
+).value =
+stage;
+
+}
+
+
+if(sowingDate){
+
+document.getElementById(
+"sowingDate"
+).value =
+sowingDate;
+
+}
+
+
+updateSummary();
+
+}
+
+
+/* =====================================
+   TASKS
+===================================== */
+
+function saveTasks(){
+
+const tasks = {
+
+task1:
+document.getElementById(
+"task1"
+).checked,
+
+task2:
+document.getElementById(
+"task2"
+).checked,
+
+task3:
+document.getElementById(
+"task3"
+).checked,
+
+task4:
+document.getElementById(
+"task4"
+).checked,
+
+task5:
+document.getElementById(
+"task5"
+).checked
+
+};
+
+
+localStorage.setItem(
+"farmTasks",
+JSON.stringify(tasks)
+);
+
+}
+
+
+/* =====================================
+   LOAD TASKS
+===================================== */
+
+function loadTasks(){
+
+const saved =
+localStorage.getItem(
+"farmTasks"
+);
+
+
+if(!saved){
+
+return;
+
+}
+
+
+const tasks =
+JSON.parse(saved);
+
+
+Object.keys(tasks)
+.forEach(
+key => {
+
+const element =
+document.getElementById(key);
+
+if(element){
+
+element.checked =
+tasks[key];
+
+}
+
+});
+
+}
+
+
+/* =====================================
+   ADD ACTIVITY
+===================================== */
+
+function addActivity(){
+
+const type =
+document.getElementById(
+"activityType"
+).value;
+
+const date =
+document.getElementById(
+"activityDate"
+).value;
+
+const notes =
+document.getElementById(
+"activityNotes"
+).value.trim();
+
+
+if(!type){
+
+alert(
+"Please select an activity."
+);
+
+return;
+
+}
+
+
+if(!date){
+
+alert(
+"Please select a date."
+);
+
+return;
+
+}
+
+
+if(!notes){
+
+alert(
+"Please enter activity notes."
+);
+
+return;
+
+}
+
+
+const activities =
+JSON.parse(
+localStorage.getItem(
+"farmActivities"
+) || "[]"
+);
+
+
+activities.unshift({
+
+type:type,
+
+date:date,
+
+notes:notes
+
+});
+
+
+localStorage.setItem(
+"farmActivities",
+JSON.stringify(
+activities
+)
+);
+
+
+document.getElementById(
+"activityType"
+).value = "";
+
+document.getElementById(
+"activityNotes"
+).value = "";
+
+document.getElementById(
+"activityDate"
+).value = today;
+
+
+displayActivities();
+
+
+alert(
+"✅ Farm activity added."
+);
+
+}
+
+
+/* =====================================
+   DISPLAY ACTIVITIES
+===================================== */
+
+function displayActivities(){
+
+const list =
+document.getElementById(
+"activityList"
+);
+
+
+const activities =
+JSON.parse(
+localStorage.getItem(
+"farmActivities"
+) || "[]"
+);
+
+
+if(activities.length === 0){
+
+list.innerHTML = `
+<div class="empty">
+No farm activities recorded yet.
+</div>
+`;
+
+return;
+
+}
+
+
+list.innerHTML = "";
+
+
+activities.forEach(
+activity => {
+
+const div =
+document.createElement(
+"div"
+);
+
+div.className =
+"activity";
+
+
+div.innerHTML = `
+
+<div class="activity-date">
+📅 ${formatDate(activity.date)}
+</div>
+
+<strong>
+${escapeHTML(activity.type)}
+</strong>
+
+<p style="margin-top:6px;">
+${escapeHTML(activity.notes)}
+</p>
+
+`;
+
+
+list.appendChild(div);
+
+});
+
+}
+
+
+/* =====================================
+   FORMAT DATE
+===================================== */
+
+function formatDate(date){
+
+const d =
+new Date(
+date + "T12:00:00"
+);
+
+
+return d.toLocaleDateString(
+"en-IN",
+{
+day:"2-digit",
+month:"short",
+year:"numeric"
+}
+);
+
+}
+
+
+/* =====================================
+   SAFE TEXT
+===================================== */
+
+function escapeHTML(text){
+
+const div =
+document.createElement(
+"div"
+);
+
+div.textContent =
+text;
+
+return div.innerHTML;
+
+}
+
+
+/* =====================================
+   CLEAR ACTIVITIES
+===================================== */
+
+function clearActivities(){
+
+if(
+!confirm(
+"Delete all farm activity history?"
+)
+){
+
+return;
+
+}
+
+
+localStorage.removeItem(
+"farmActivities"
+);
+
+
+displayActivities();
+
+}
+
+
+/* =====================================
+   START
+===================================== */
+
+loadCrop();
+
+loadTasks();
+
+displayActivities();
+
+</script>
+
+</body>
+                            </html>
