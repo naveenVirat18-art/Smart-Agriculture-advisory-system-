@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Recommendation - Smart Agriculture</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #eef8ef;
+      color: #173b24;
+    }
+
+    .app {
+      max-width: 500px;
+      margin: auto;
+      min-height: 100vh;
+      padding-bottom: 30px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #087b35, #20a34a);
+      color: white;
+      padding: 20px;
+      border-radius: 0 0 28px 28px;
+    }
+
+    .back {
+      background: rgba(255,255,255,.2);
+      border: 1px solid white;
+      color: white;
+      padding: 9px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    header h1 {
+      margin-top: 20px;
+      font-size: 25px;
+    }
+
+    header p {
+      margin-top: 7px;
+    }
+
+    .content {
+      padding: 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 15px 0 7px;
+    }
+
+    select,
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      background: white;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      background: #087b35;
+      color: white;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 11px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn:active {
+      transform: scale(.98);
+    }
+
+    #results {
+      display: none;
+    }
+
+    .result-title {
+      color: #087b35;
+      margin-bottom: 15px;
+    }
+
+    .crop {
+      border: 1px solid #dcecdf;
+      background: #f7fcf8;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+
+    .crop h3 {
+      color: #087b35;
+      margin-bottom: 6px;
+    }
+
+    .crop p {
+      color: #5d6c62;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .reason {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #087b35;
+      font-weight: bold;
+    }
+
+    .warning {
+      background: #fff8df;
+      color: #705b00;
+      padding: 13px;
+      border-radius: 10px;
+      margin-top: 15px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .bottom {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .home-btn {
+      border: none;
+      background: transparent;
+      color: #087b35;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header>
+
+    <button class="back" onclick="goBack()">
+      ← Back
+    </button>
+
+    <h1>🌱 Which Crop to Grow?</h1>
+
+    <p>
+      Get crop suggestions based on your farm conditions.
+    </p>
+
+  </header>
+
+
+  <main class="content">
+
+    <!-- INPUT FORM -->
+
+    <div class="card">
+
+      <h2>Farm Information</h2>
+
+      <label for="soil">
+        🪨 Soil Type
+      </label>
+
+      <select id="soil">
+
+        <option value="">
+          Select soil type
+        </option>
+
+        <option value="alluvial">
+          Alluvial Soil
+        </option>
+
+        <option value="black">
+          Black Soil
+        </option>
+
+        <option value="red">
+          Red Soil
+        </option>
+
+        <option value="sandy">
+          Sandy Soil
+        </option>
+
+        <option value="loamy">
+          Loamy Soil
+        </option>
+
+        <option value="clay">
+          Clay Soil
+        </option>
+
+      </select>
+
+
+      <label for="season">
+        🌦️ Season
+      </label>
+
+      <select id="season">
+
+        <option value="">
+          Select season
+        </option>
+
+        <option value="kharif">
+          Kharif / Monsoon
+        </option>
+
+        <option value="rabi">
+          Rabi / Winter
+        </option>
+
+        <option value="summer">
+          Summer
+        </option>
+
+      </select>
+
+
+      <label for="water">
+        💧 Water Availability
+      </label>
+
+      <select id="water">
+
+        <option value="">
+          Select water availability
+        </option>
+
+        <option value="high">
+          High
+        </option>
+
+        <option value="medium">
+          Medium
+        </option>
+
+        <option value="low">
+          Low
+        </option>
+
+      </select>
+
+
+      <label for="land">
+        📐 Land Size (acres)
+      </label>
+
+      <input
+        type="number"
+        id="land"
+        min="0.1"
+        step="0.1"
+        placeholder="Example: 2"
+      >
+
+
+      <button class="btn" onclick="recommendCrops()">
+        🌱 Recommend Crops
+      </button>
+
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <div class="card" id="results">
+
+      <h2 class="result-title">
+        Recommended Crops
+      </h2>
+
+      <div id="cropList"></div>
+
+      <div class="warning">
+        ⚠️ These are general recommendations.
+        Actual crop selection should also consider
+        your local climate, seed availability,
+        soil test results, irrigation facilities and
+        local agricultural advice.
+      </div>
+
+    </div>
+
+
+    <div class="bottom">
+
+      <button class="home-btn" onclick="goHome()">
+        🏠 Back to Home
+      </button>
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<script>
+
+function recommendCrops() {
+
+  const soil =
+    document.getElementById("soil").value;
+
+  const season =
+    document.getElementById("season").value;
+
+  const water =
+    document.getElementById("water").value;
+
+  const land =
+    document.getElementById("land").value;
+
+
+  if (!soil || !season || !water || !land) {
+
+    alert(
+      "Please enter all farm details."
+    );
+
+    return;
+  }
+
+
+  let crops = [];
+
+
+  /*
+    GENERAL CROP RECOMMENDATION RULES
+  */
+
+
+  // ALLUVIAL
+
+  if (soil === "alluvial") {
+
+    if (season === "kharif") {
+
+      crops.push({
+        name: "🌾 Paddy",
+        reason: "Suitable for many fertile alluvial areas with adequate water."
+      });
+
+      crops.push({
+        name: "🌽 Maize",
+        reason: "Can perform well in fertile, well-drained soils."
+      });
+
+    }
+
+    if (season === "rabi") {
+
+      crops.push({
+        name: "🌾 Wheat",
+        reason: "Commonly grown in fertile soils during cooler conditions."
+      });
+
+      crops.push({
+        name: "🫘 Chickpea",
+        reason: "Can be suitable for well-drained soils with moderate water."
+      });
+
+    }
+
+    if (season === "summer") {
+
+      crops.push({
+        name: "🌽 Maize",
+        reason: "Can be grown where irrigation is available."
+      });
+
+      crops.push({
+        name: "🥒 Vegetables",
+        reason: "Suitable vegetables can be considered with reliable irrigation."
+      });
+
+    }
+
+  }
+
+
+  // BLACK SOIL
+
+  if (soil === "black") {
+
+    if (season === "kharif") {
+
+      crops.push({
+        name: "🌿 Cotton",
+        reason: "Black soils are widely associated with cotton production."
+      });
+
+      crops.push({
+        name: "🌱 Soybean",
+        reason: "Can perform well in suitable black soil conditions."
+      });
+
+    }
+
+    if (season === "rabi") {
+
+      crops.push({
+        name: "🌾 Wheat",
+        reason: "Can be grown in suitable black soils with appropriate management."
+      });
+
+      crops.push({
+        name: "🫘 Chickpea",
+        reason: "Often suitable for well-managed black soils."
+      });
+
+    }
+
+  }
+
+
+  // RED SOIL
+
+  if (soil === "red") {
+
+    if (season === "kharif") {
+
+      crops.push({
+        name: "🌱 Groundnut",
+        reason: "Can perform well in suitable, well-drained red soils."
+      });
+
+      crops.push({
+        name: "🌽 Maize",
+        reason: "Can be considered where nutrients and moisture are adequate."
+      });
+
+    }
+
+    if (season === "rabi") {
+
+      crops.push({
+        name: "🫘 Chickpea",
+        reason: "Can be considered in suitable red soil areas."
+      });
+
+    }
+
+    if (season === "summer") {
+
+      crops.push({
+        name: "🥜 Groundnut",
+        reason: "Possible where irrigation and temperature conditions are suitable."
+      });
+
+    }
+
+  }
+
+
+  // SANDY SOIL
+
+  if (soil === "sandy") {
+
+    crops.push({
+      name: "🥜 Groundnut",
+      reason: "Suitable crops should tolerate well-drained soil conditions."
+    });
+
+    crops.push({
+      name: "🌱 Millets",
+      reason: "Some millet crops can tolerate lower moisture conditions."
+    });
+
+  }
+
+
+  // LOAMY SOIL
+
+  if (soil === "loamy") {
+
+    crops.push({
+      name: "🌾 Wheat",
+      reason: "Loamy soils can provide good conditions for many field crops."
+    });
+
+    crops.push({
+      name: "🌽 Maize",
+      reason: "Suitable where fertility and moisture are adequate."
+    });
+
+    crops.push({
+      name: "🥬 Vegetables",
+      reason: "Many vegetables can perform well in fertile loamy soil."
+    });
+
+  }
+
+
+  // CLAY SOIL
+
+  if (soil === "clay") {
+
+    crops.push({
+      name: "🌾 Paddy",
+      reason: "Clay soils can retain water and may suit rice under appropriate conditions."
+    });
+
+    crops.push({
+      name: "🌾 Wheat",
+      reason: "Can be considered with proper drainage and soil management."
+    });
+
+  }
+
+
+  /*
+    WATER FILTER
+  */
+
+  if (water === "low") {
+
+    crops = crops.filter(function(crop) {
+
+      return !crop.name.includes("Paddy");
+
+    });
+
+    crops.push({
+      name: "🌱 Millets",
+      reason: "Considered where water availability is limited, depending on local conditions."
+    });
+
+  }
+
+
+  if (water === "high") {
+
+    crops.push({
+      name: "🥬 Vegetables",
+      reason: "Reliable irrigation may support suitable vegetable crops."
+    });
+
+  }
+
+
+  /*
+    REMOVE DUPLICATES
+  */
+
+  const unique = [];
+
+  crops.forEach(function(crop) {
+
+    const exists =
+      unique.some(function(item) {
+        return item.name === crop.name;
+      });
+
+    if (!exists) {
+      unique.push(crop);
+    }
+
+  });
+
+
+  /*
+    SHOW RESULTS
+  */
+
+  const cropList =
+    document.getElementById("cropList");
+
+  cropList.innerHTML = "";
+
+
+  unique.slice(0, 5).forEach(function(crop) {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "crop";
+
+    div.innerHTML = `
+      <h3>${crop.name}</h3>
+      <p>${crop.reason}</p>
+      <div class="reason">
+        Season: ${season}
+        • Water: ${water}
+        • Land: ${land} acre(s)
+      </div>
+    `;
+
+    cropList.appendChild(div);
+
+  });
+
+
+  document.getElementById("results")
+    .style.display = "block";
+
+
+  document.getElementById("results")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+
+function goBack() {
+
+  window.location.href = "home.html";
+
+}
+
+
+function goHome() {
+
+  window.location.href = "home.html";
+
+}
+
+</script>
+
+</body>
+</html>
