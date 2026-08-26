@@ -19,7 +19,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #163b27;
     }
 
     .app {
@@ -28,13 +27,168 @@
       min-height: 100vh;
       padding: 25px;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
+      align-items: center;
     }
 
-    /* SPLASH */
-    #splash {
+    .card {
+      width: 100%;
+      background: white;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    }
+
+    .logo {
+      width: 100px;
+      height: 100px;
+      background: #e8f7ed;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 55px;
+    }
+
+    h1 {
       text-align: center;
+      color: #087b32;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 15px 0 7px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 17px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #087b32;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      background: #087b32;
+      color: white;
+      padding: 17px;
+      border-radius: 12px;
+      margin-top: 22px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn:active {
+      transform: scale(.98);
+    }
+
+    .note {
+      text-align: center;
+      color: #777;
+      font-size: 13px;
+      margin-top: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="card">
+
+    <div class="logo">🌱</div>
+
+    <h1>Smart Agriculture</h1>
+
+    <p class="subtitle">
+      Farmer Advisory System
+    </p>
+
+    <label for="farmerName">
+      Farmer Name
+    </label>
+
+    <input
+      type="text"
+      id="farmerName"
+      placeholder="Enter your name"
+    >
+
+    <label for="mobile">
+      Mobile Number
+    </label>
+
+    <input
+      type="tel"
+      id="mobile"
+      placeholder="10 digit mobile number"
+      maxlength="10"
+      inputmode="numeric"
+    >
+
+    <button class="btn" onclick="continueToHome()">
+      🌾 Continue
+    </button>
+
+    <p class="note">
+      No OTP required
+    </p>
+
+  </div>
+
+</div>
+
+<script>
+
+function continueToHome() {
+
+  const name =
+    document.getElementById("farmerName").value.trim();
+
+  const mobile =
+    document.getElementById("mobile").value.trim();
+
+  if (!name) {
+    alert("Please enter farmer name.");
+    return;
+  }
+
+  if (!/^[0-9]{10}$/.test(mobile)) {
+    alert("Please enter a valid 10 digit mobile number.");
+    return;
+  }
+
+  // Save farmer information
+  localStorage.setItem("farmerName", name);
+  localStorage.setItem("farmerMobile", mobile);
+
+  // Go to home screen
+  window.location.href = "home.html";
+}
+
+</script>
+
+</body>
+</html>      text-align: center;
       color: white;
     }
 
