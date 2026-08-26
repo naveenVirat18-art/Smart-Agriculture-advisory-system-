@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Smart Agriculture - Farmer Advisory System</title>
 
   <style>
@@ -19,6 +20,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      color: #163b27;
     }
 
     .app {
@@ -28,6 +30,7 @@
       padding: 25px;
       display: flex;
       align-items: center;
+      justify-content: center;
     }
 
     .card {
@@ -35,6 +38,239 @@
       background: white;
       border-radius: 28px;
       padding: 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+      width: 120px;
+      height: 120px;
+      background: #e8f7ed;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 65px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #087b32;
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 17px;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      color: #087b32;
+      font-size: 26px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 15px 0 7px;
+      color: #333;
+      font-size: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 17px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #087b32;
+      box-shadow: 0 0 0 2px rgba(8, 123, 50, 0.1);
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      background: #087b32;
+      color: white;
+      padding: 17px;
+      border-radius: 12px;
+      margin-top: 24px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #066528;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .note {
+      text-align: center;
+      color: #777;
+      font-size: 13px;
+      margin-top: 18px;
+    }
+
+    .error {
+      color: #b00020;
+      background: #ffe8e8;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 15px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+
+    <div class="card">
+
+      <!-- Logo -->
+      <div class="logo">
+        🌱
+      </div>
+
+      <!-- Title -->
+      <h1>
+        Smart Agriculture
+      </h1>
+
+      <p class="subtitle">
+        Farmer Advisory System
+      </p>
+
+      <!-- Login -->
+      <h2>
+        Farmer Login
+      </h2>
+
+      <!-- Farmer Name -->
+      <label for="farmerName">
+        Farmer Name
+      </label>
+
+      <input
+        type="text"
+        id="farmerName"
+        placeholder="Enter your name"
+        autocomplete="name"
+      >
+
+      <!-- Mobile -->
+      <label for="mobile">
+        Mobile Number
+      </label>
+
+      <input
+        type="tel"
+        id="mobile"
+        placeholder="10 digit mobile number"
+        maxlength="10"
+        inputmode="numeric"
+        autocomplete="tel"
+      >
+
+      <!-- Error message -->
+      <div id="errorMessage" class="error"></div>
+
+      <!-- Continue -->
+      <button
+        class="btn"
+        onclick="continueToHome()"
+      >
+        🌾 Continue
+      </button>
+
+      <p class="note">
+        No OTP required
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    function continueToHome() {
+
+      const name =
+        document.getElementById("farmerName").value.trim();
+
+      const mobile =
+        document.getElementById("mobile").value.trim();
+
+      const error =
+        document.getElementById("errorMessage");
+
+
+      // Clear previous error
+      error.style.display = "none";
+      error.textContent = "";
+
+
+      // Check name
+      if (name === "") {
+
+        error.textContent =
+          "Please enter your farmer name.";
+
+        error.style.display = "block";
+
+        return;
+      }
+
+
+      // Check mobile
+      if (!/^[0-9]{10}$/.test(mobile)) {
+
+        error.textContent =
+          "Please enter a valid 10 digit mobile number.";
+
+        error.style.display = "block";
+
+        return;
+      }
+
+
+      // Save farmer information
+      localStorage.setItem(
+        "farmerName",
+        name
+      );
+
+      localStorage.setItem(
+        "farmerMobile",
+        mobile
+      );
+
+
+      // Open Home page
+      window.location.href = "home.html";
+
+    }
+
+  </script>
+
+</body>
+</html>      padding: 28px;
       box-shadow: 0 10px 30px rgba(0,0,0,.2);
     }
 
