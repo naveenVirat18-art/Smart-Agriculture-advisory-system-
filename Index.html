@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Smart Agriculture</title>
+  <title>Smart Agriculture - Farmer Advisory System</title>
 
   <style>
     * {
@@ -29,15 +29,63 @@
       min-height: 100vh;
       padding: 25px;
       display: flex;
-      flex-direction: column;
+      align-items: center;
       justify-content: center;
     }
 
     .card {
+      width: 100%;
       background: white;
       border-radius: 28px;
-      padding: 25px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.2);
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .logo {
+      width: 120px;
+      height: 120px;
+      background: #e5f8e9;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 20px;
+      font-size: 60px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #087b32;
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 18px 0 8px;
+      font-size: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 17px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #087b32;
     }
 
     .btn {
@@ -47,12 +95,137 @@
       color: white;
       padding: 17px;
       border-radius: 12px;
-      margin-top: 20px;
+      margin-top: 25px;
       font-size: 18px;
       font-weight: bold;
       cursor: pointer;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .info {
+      text-align: center;
+      margin-top: 18px;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .error {
+      color: #b00020;
+      text-align: center;
+      margin-top: 15px;
+      display: none;
+      font-weight: bold;
     }
   </style>
 </head>
 
 <body>
+
+  <div class="app">
+
+    <div class="card">
+
+      <div class="logo">
+        🌱
+      </div>
+
+      <h1>Smart Agriculture</h1>
+
+      <p class="subtitle">
+        Farmer Advisory System
+      </p>
+
+      <form id="farmerForm">
+
+        <label for="farmerName">
+          Farmer Name
+        </label>
+
+        <input
+          type="text"
+          id="farmerName"
+          placeholder="Enter your name"
+          required
+        >
+
+        <label for="mobile">
+          Mobile Number
+        </label>
+
+        <input
+          type="tel"
+          id="mobile"
+          placeholder="10 digit mobile number"
+          maxlength="10"
+          inputmode="numeric"
+          required
+        >
+
+        <button type="submit" class="btn">
+          🌾 Continue
+        </button>
+
+        <div id="error" class="error">
+          Please enter a valid name and 10 digit mobile number.
+        </div>
+
+      </form>
+
+      <p class="info">
+        No OTP required
+      </p>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    document
+      .getElementById("farmerForm")
+      .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const name =
+          document.getElementById("farmerName").value.trim();
+
+        const mobile =
+          document.getElementById("mobile").value.trim();
+
+        const error =
+          document.getElementById("error");
+
+        // Validate name
+        if (!name) {
+          error.style.display = "block";
+          error.textContent = "Please enter your name.";
+          return;
+        }
+
+        // Validate mobile
+        if (!/^[0-9]{10}$/.test(mobile)) {
+          error.style.display = "block";
+          error.textContent =
+            "Please enter a valid 10 digit mobile number.";
+          return;
+        }
+
+        error.style.display = "none";
+
+        // Save farmer information
+        localStorage.setItem("farmerName", name);
+        localStorage.setItem("farmerMobile", mobile);
+
+        // Open Home page
+        window.location.href = "Home.html";
+
+      });
+
+  </script>
+
+</body>
+</html>
