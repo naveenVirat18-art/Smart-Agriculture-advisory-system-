@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Smart Agriculture - Home</title>
 
   <style>
@@ -14,210 +15,110 @@
     }
 
     body {
-      background: #eef8ef;
-      color: #173b24;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #087b32, #35a853);
+      color: #163b27;
     }
 
-    header {
-      background: linear-gradient(135deg, #087b35, #20a34a);
+    .container {
+      width: 100%;
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
       color: white;
-      padding: 22px 18px 28px;
-      border-radius: 0 0 28px 28px;
-    }
-
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 25px 10px;
     }
 
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-icon {
-      width: 45px;
-      height: 45px;
+      width: 90px;
+      height: 90px;
       background: white;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 25px;
+      margin: 0 auto 15px;
+      font-size: 45px;
     }
 
-    .profile {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: white;
-      color: #087b35;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
+    .header h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
     }
 
-    header h1 {
-      font-size: 24px;
-      margin-top: 22px;
-    }
-
-    header p {
-      margin-top: 6px;
-      opacity: 0.9;
-    }
-
-    /* MARKET PRICE */
-
-    .market-section {
-      padding: 18px;
-    }
-
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .section-title h2 {
-      font-size: 20px;
-      color: #087b35;
-    }
-
-    .view {
-      color: #087b35;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .market-container {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 5px;
-    }
-
-    .market-card {
-      min-width: 145px;
-      background: white;
-      border-radius: 16px;
-      padding: 15px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
-
-    .market-card .crop {
+    .header p {
       font-size: 16px;
-      font-weight: bold;
     }
 
-    .price {
-      font-size: 19px;
-      color: #087b35;
-      font-weight: bold;
-      margin-top: 8px;
+    .welcome {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,.15);
     }
 
-    .change {
-      font-size: 12px;
-      color: #16833c;
-      margin-top: 5px;
+    .welcome h2 {
+      color: #087b32;
+      margin-bottom: 8px;
     }
 
-    /* FEATURES */
-
-    .features {
-      padding: 0 18px 100px;
+    .welcome p {
+      color: #555;
     }
 
-    .feature-grid {
+    .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      gap: 15px;
     }
 
-    .feature {
+    .card {
       background: white;
       border-radius: 18px;
-      padding: 20px 14px;
-      min-height: 150px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.07);
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .feature:active {
-      transform: scale(0.97);
-    }
-
-    .feature-icon {
-      width: 52px;
-      height: 52px;
-      background: #e4f7e8;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      margin-bottom: 12px;
-    }
-
-    .feature h3 {
-      font-size: 16px;
-      margin-bottom: 6px;
-    }
-
-    .feature p {
-      color: #6c786f;
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    /* BOTTOM NAVIGATION */
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      background: white;
-      border-top: 1px solid #ddd;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 100;
-    }
-
-    .nav-item {
+      min-height: 145px;
+      padding: 20px 10px;
       text-align: center;
-      color: #68736c;
-      font-size: 11px;
-      cursor: pointer;
+      text-decoration: none;
+      color: #163b27;
+      box-shadow: 0 8px 20px rgba(0,0,0,.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: transform .15s;
     }
 
-    .nav-item .icon {
-      font-size: 23px;
-      margin-bottom: 3px;
+    .card:active {
+      transform: scale(.96);
     }
 
-    .nav-item.active {
-      color: #087b35;
-      font-weight: bold;
+    .icon {
+      font-size: 42px;
+      margin-bottom: 10px;
     }
 
-    /* MOBILE */
+    .card h3 {
+      color: #087b32;
+      font-size: 18px;
+    }
 
-    @media (max-width: 380px) {
-      .feature-grid {
-        gap: 10px;
-      }
+    .footer {
+      text-align: center;
+      color: white;
+      margin-top: 25px;
+      padding-bottom: 20px;
+      font-size: 13px;
+    }
 
-      .feature {
-        padding: 15px 10px;
+    @media (max-width: 360px) {
+      .grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -225,266 +126,140 @@
 
 <body>
 
-  <!-- HEADER -->
+  <div class="container">
 
-  <header>
-    <div class="top">
+    <!-- HEADER -->
+    <div class="header">
 
-      <div class="logo">
-        <div class="logo-icon">🌱</div>
+      <div class="logo">🌱</div>
 
-        <div>
-          <strong>Smart Agriculture</strong>
-          <div style="font-size:12px;">
-            Farmer Advisory System
-          </div>
-        </div>
-      </div>
+      <h1>Smart Agriculture</h1>
 
-      <div class="profile" onclick="openProfile()">
-        F
-      </div>
+      <p>Farmer Advisory System</p>
 
     </div>
 
-    <h1>Welcome, Farmer 👨‍🌾</h1>
-    <p>Your smart farming assistant</p>
-  </header>
 
+    <!-- WELCOME -->
+    <div class="welcome">
 
-  <!-- MARKET PRICES -->
+      <h2 id="welcomeName">
+        Welcome Farmer
+      </h2>
 
-  <section class="market-section">
-
-    <div class="section-title">
-      <h2>📈 Market Prices</h2>
-      <span class="view" onclick="marketPrices()">View All</span>
-    </div>
-
-    <div class="market-container">
-
-      <div class="market-card">
-        <div class="crop">🌾 Paddy</div>
-        <div class="price">₹2,350</div>
-        <div class="change">▲ 2.4% today</div>
-      </div>
-
-      <div class="market-card">
-        <div class="crop">🌽 Maize</div>
-        <div class="price">₹2,180</div>
-        <div class="change">▲ 1.8% today</div>
-      </div>
-
-      <div class="market-card">
-        <div class="crop">🥜 Groundnut</div>
-        <div class="price">₹6,250</div>
-        <div class="change">▲ 3.1% today</div>
-      </div>
-
-      <div class="market-card">
-        <div class="crop">🌶️ Chilli</div>
-        <div class="price">₹8,400</div>
-        <div class="change">▲ 1.2% today</div>
-      </div>
+      <p>
+        Select a service below
+      </p>
 
     </div>
 
-  </section>
+
+    <!-- 8 SERVICES -->
+    <div class="grid">
+
+      <!-- 1 CROP -->
+      <a class="card" href="crop.html">
+
+        <div class="icon">🌾</div>
+
+        <h3>Crop Advisory</h3>
+
+      </a>
 
 
-  <!-- FEATURES -->
+      <!-- 2 SOIL -->
+      <a class="card" href="soil.html">
 
-  <section class="features">
+        <div class="icon">🪨</div>
 
-    <div class="section-title">
-      <h2>🌱 Farming Services</h2>
-    </div>
+        <h3>Soil Advisory</h3>
 
-    <div class="feature-grid">
-
-      <!-- CROP -->
-
-      <div class="feature" onclick="openPage('crop.html')">
-
-        <div class="feature-icon">🌱</div>
-
-        <h3>Which Crop to Grow</h3>
-
-        <p>
-          Get crop recommendations based on soil,
-          season and farming conditions.
-        </p>
-
-      </div>
+      </a>
 
 
-      <!-- SOIL -->
+      <!-- 3 IRRIGATION -->
+      <a class="card" href="irrigation.html">
 
-      <div class="feature" onclick="openPage('soil.html')">
-
-        <div class="feature-icon">🪨</div>
-
-        <h3>Soil Identification</h3>
-
-        <p>
-          Identify soil type and understand
-          its characteristics.
-        </p>
-
-      </div>
-
-
-      <!-- IRRIGATION -->
-
-      <div class="feature" onclick="openPage('irrigation.html')">
-
-        <div class="feature-icon">💧</div>
+        <div class="icon">💧</div>
 
         <h3>Irrigation</h3>
 
-        <p>
-          Know the water requirements and
-          irrigation schedule for your crop.
-        </p>
-
-      </div>
+      </a>
 
 
-      <!-- FERTILIZER -->
+      <!-- 4 FERTILIZER -->
+      <a class="card" href="fertilizer.html">
 
-      <div class="feature" onclick="openPage('fertilizer.html')">
+        <div class="icon">🌱</div>
 
-        <div class="feature-icon">🌾</div>
+        <h3>Fertilizer</h3>
 
-        <h3>Fertilizer Advice</h3>
-
-        <p>
-          Get fertilizer recommendations
-          for better crop growth.
-        </p>
-
-      </div>
+      </a>
 
 
-      <!-- WEATHER -->
+      <!-- 5 WEATHER -->
+      <a class="card" href="weather.html">
 
-      <div class="feature" onclick="openPage('weather.html')">
+        <div class="icon">🌦️</div>
 
-        <div class="feature-icon">🌦️</div>
+        <h3>Weather</h3>
 
-        <h3>Weather Advice</h3>
-
-        <p>
-          Weather-based farming recommendations
-          for your field.
-        </p>
-
-      </div>
+      </a>
 
 
-      <!-- PEST -->
+      <!-- 6 PEST -->
+      <a class="card" href="pest.html">
 
-      <div class="feature" onclick="openPage('pest.html')">
+        <div class="icon">🐛</div>
 
-        <div class="feature-icon">🐛</div>
+        <h3>Pest Advisory</h3>
 
-        <h3>Pest & Disease</h3>
-
-        <p>
-          Basic pest and crop disease
-          identification and guidance.
-        </p>
-
-      </div>
+      </a>
 
 
-      <!-- CROP MANAGEMENT -->
+      <!-- 7 MANAGEMENT -->
+      <a class="card" href="management.html">
 
-      <div class="feature" onclick="openPage('management.html')">
+        <div class="icon">📊</div>
 
-        <div class="feature-icon">📊</div>
+        <h3>Farm Management</h3>
 
-        <h3>Crop Management</h3>
-
-        <p>
-          Manage your crop activities,
-          growth and farming schedule.
-        </p>
-
-      </div>
+      </a>
 
 
-      <!-- MARKET -->
+      <!-- 8 MARKET -->
+      <a class="card" href="market.html">
 
-      <div class="feature" onclick="marketPrices()">
-
-        <div class="feature-icon">💰</div>
+        <div class="icon">💰</div>
 
         <h3>Market Prices</h3>
 
-        <p>
-          Check crop prices and market
-          information.
-        </p>
-
-      </div>
+      </a>
 
     </div>
 
-  </section>
 
-
-  <!-- BOTTOM NAVIGATION -->
-
-  <nav class="bottom-nav">
-
-    <div class="nav-item active" onclick="goHome()">
-      <div class="icon">🏠</div>
-      Home
+    <div class="footer">
+      Smart Agriculture © 2026
     </div>
 
-    <div class="nav-item" onclick="openPage('crop.html')">
-      <div class="icon">🌱</div>
-      Crops
-    </div>
-
-    <div class="nav-item" onclick="openPage('weather.html')">
-      <div class="icon">🌦️</div>
-      Weather
-    </div>
-
-    <div class="nav-item" onclick="marketPrices()">
-      <div class="icon">💰</div>
-      Market
-    </div>
-
-    <div class="nav-item" onclick="openProfile()">
-      <div class="icon">👤</div>
-      Profile
-    </div>
-
-  </nav>
+  </div>
 
 
   <script>
 
-    function openPage(page) {
-      window.location.href = page;
-    }
+    // Show farmer name if saved
+    const farmerName =
+      localStorage.getItem("farmerName");
 
-    function goHome() {
-      window.location.href = "home.html";
-    }
+    if (farmerName) {
 
-    function marketPrices() {
-      window.location.href = "market.html";
-    }
+      document.getElementById("welcomeName").textContent =
+        "Welcome, " + farmerName;
 
-    function openProfile() {
-      window.location.href = "profile.html";
     }
 
   </script>
 
 </body>
-  </html>
+</html>
