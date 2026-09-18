@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Camera - Smart Agriculture</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef7f0;
+            color: #183b22;
+        }
+
+        header {
+            background: #176b36;
+            color: white;
+            padding: 22px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 850px;
+            margin: 25px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        button,
+        .upload-button {
+            border: none;
+            background: #176b36;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 9px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        button:hover,
+        .upload-button:hover {
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .secondary {
+            background: #54705d;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #bbb;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 8px;
+        }
+
+        #preview {
+            width: 100%;
+            max-height: 450px;
+            object-fit: contain;
+            display: none;
+            margin-top: 20px;
+            border-radius: 12px;
+            background: #e8eee9;
+        }
+
+        #loading {
+            display: none;
+            text-align: center;
+        }
+
+        .loader {
+            font-size: 40px;
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #results {
+            display: none;
+        }
+
+        .result-box {
+            background: #f5faf6;
+            border-left: 5px solid #176b36;
+            padding: 15px;
+            margin: 13px 0;
+            border-radius: 7px;
+        }
+
+        .result-title {
+            font-weight: bold;
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .warning {
+            background: #fff8df;
+            border-left-color: #d09200;
+        }
+
+        .back {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .back a {
+            color: #176b36;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .status {
+            margin-top: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>📷 AI Agriculture Camera</h1>
+    <p>Capture your crop or field and get smart agricultural advice</p>
+</header>
+
+
+<div class="container">
+
+    <!-- CAMERA SECTION -->
+    <div class="card">
+
+        <h2>📸 Capture Crop / Soil Image</h2>
+
+        <p>
+            Take a clear picture of your crop, leaves, soil, or field.
+        </p>
+
+        <div class="buttons">
+
+            <!-- Phone camera -->
+            <label class="upload-button" for="cameraInput">
+                📷 Open Camera
+            </label>
+
+            <input
+                id="cameraInput"
+                type="file"
+                accept="image/*"
+                capture="environment"
+            >
+
+
+            <!-- Gallery -->
+            <label class="upload-button secondary" for="galleryInput">
+                🖼️ Choose From Gallery
+            </label>
+
+            <input
+                id="galleryInput"
+                type="file"
+                accept="image/*"
+            >
+
+        </div>
+
+
+        <!-- Image Preview -->
+        <img
+            id="preview"
+            alt="Crop or soil image preview"
+        >
+
+    </div>
+
+
+    <!-- CROP INFORMATION -->
+    <div class="card">
+
+        <h2>🌱 Crop Information</h2>
+
+        <p>
+            Enter the crop name if you know it.
+            Otherwise leave it empty and AI will try to identify it.
+        </p>
+
+        <input
+            id="cropHint"
+            type="text"
+            placeholder="Example: Rice, Cotton, Tomato, Chilli"
+        >
+
+        <br><br>
+
+        <button
+            id="analyzeBtn"
+            disabled
+        >
+            🔍 Analyze Image
+        </button>
+
+        <div
+            id="status"
+            class="status"
+        ></div>
+
+    </div>
+
+
+    <!-- LOADING -->
+    <div
+        id="loading"
+        class="card"
+    >
+
+        <div class="loader">🌱</div>
+
+        <h2>AI is analyzing the image...</h2>
+
+        <p>
+            Please wait while the agricultural AI checks the image.
+        </p>
+
+    </div>
+
+
+    <!-- RESULTS -->
+    <div
+        id="results"
+        class="card"
+    >
+
+        <h2>🌾 AI Agriculture Report</h2>
+
+
+        <!-- CROP -->
+        <div class="result-box">
+
+            <div class="result-title">
+                🌱 Crop / Visible Field
+            </div>
+
+            <div id="cropResult">
+                -
+            </div>
+
+        </div>
+
+
+        <!-- FIELD -->
+        <div class="result-box">
+
+            <div class="result-title">
+                🌍 Field / Soil Type
+            </div>
+
+            <div id="fieldResult">
+                -
+            </div>
+
+        </div>
+
+
+        <!-- CONFIDENCE -->
+        <div class="result-box">
+
+            <div class="result-title">
+                🎯 AI Confidence
+            </div>
+
+            <div id="confidenceResult">
+                -
+            </div>
+
+        </div>
+
+
+        <!-- IRRIGATION -->
+        <div class="result-box">
+
+            <div class="result-title">
+                💧 Irrigation Advice
+            </div>
+
+            <div id="irrigationResult">
+                -
+            </div>
+
+        </div>
+
+
+        <!-- DISEASE -->
+        <div class="result-box">
+
+            <div class="result-title">
+                🐛 Possible Disease / Pest / Problem
+            </div>
+
+            <div id="problemResult">
+                -
+            </div>
+
+        </div>
+
+
+        <!-- SYMPTOMS -->
+        <div class="result-box">
+
+            <div class="result-title">
+                🔎 Visible Symptoms
+            </div>
+
+            <div id="symptomsResult">
+                -
+            </div>
+
+        </div>
+
+
+        <!-- ACTION -->
+        <div class="result-box">
+
+            <div class="result-title">
+                🛠️ Immediate Actions
+            </div>
+
+            <div id="actionsResult">
+                -
+            </div>
+
+        </div>
+
+
+        <!-- FERTILIZER -->
+        <div class="result-box">
+
+            <div class="result-title">
+                🌿 Fertilizer / Nutrient Guidance
+            </div>
+
+            <div id="fertilizerResult">
+                -
+            </div>
+
+        </div>
+
+
+        <!-- WARNING -->
+        <div class="result-box warning">
+
+            <div class="result-title">
+                ⚠️ Important Note
+            </div>
+
+            <div id="cautionResult">
+                -
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BACK -->
+    <div class="back">
+
+        <a href="home.html">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    let selectedFile = null;
+
+
+    const cameraInput =
+        document.getElementById("cameraInput");
+
+    const galleryInput =
+        document.getElementById("galleryInput");
+
+    const preview =
+        document.getElementById("preview");
+
+    const analyzeBtn =
+        document.getElementById("analyzeBtn");
+
+    const loading =
+        document.getElementById("loading");
+
+    const results =
+        document.getElementById("results");
+
+    const status =
+        document.getElementById("status");
+
+
+    // Camera image selected
+    cameraInput.addEventListener(
+        "change",
+        handleImage
+    );
+
+
+    // Gallery image selected
+    galleryInput.addEventListener(
+        "change",
+        handleImage
+    );
+
+
+    function handleImage(event) {
+
+        const file =
+            event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+
+        if (!file.type.startsWith("image/")) {
+
+            alert(
+                "Please select a valid image."
+            );
+
+            return;
+        }
+
+
+        selectedFile = file;
+
+
+        // Show image
+        preview.src =
+            URL.createObjectURL(file);
+
+        preview.style.display =
+            "block";
+
+
+        // Enable AI button
+        analyzeBtn.disabled =
+            false;
+
+
+        status.textContent =
+            "✅ Image selected. Ready for AI analysis.";
+
+        results.style.display =
+            "none";
+    }
+
+
+    // Convert image to Base64
+    function imageToBase64(file) {
+
+        return new Promise(
+            (resolve, reject) => {
+
+                const reader =
+                    new FileReader();
+
+                reader.onload = function () {
+
+                    const base64 =
+                        reader.result.split(",")[1];
+
+                    resolve(base64);
+                };
+
+
+                reader.onerror =
+                    reject;
+
+
+                reader.readAsDataURL(file);
+            }
+        );
+    }
+
+
+    function setResult(id, value) {
+
+        document.getElementById(id)
+            .textContent =
+            value || "Not available";
+    }
+
+
+    // Analyze button
+    analyzeBtn.addEventListener(
+        "click",
+        async function () {
+
+            if (!selectedFile) {
+
+                alert(
+                    "Please capture or select an image first."
+                );
+
+                return;
+            }
+
+
+            analyzeBtn.disabled =
+                true;
+
+
+            status.textContent =
+                "⏳ Sending image to AI...";
+
+
+            loading.style.display =
+                "block";
+
+            results.style.display =
+                "none";
+
+
+            try {
+
+                const image =
+                    await imageToBase64(
+                        selectedFile
+                    );
+
+
+                const cropHint =
+                    document
+                        .getElementById(
+                            "cropHint"
+                        )
+                        .value
+                        .trim();
+
+
+                const response =
+                    await fetch(
+                        "/api/analyze",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    image:
+                                        image,
+
+                                    mimeType:
+                                        selectedFile.type,
+
+                                    cropHint:
+                                        cropHint
+
+                                })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "AI analysis failed."
+                    );
+                }
+
+
+                const analysis =
+                    data.analysis;
+
+
+                // Display results
+
+                setResult(
+                    "cropResult",
+                    analysis.crop_or_visible_field
+                );
+
+
+                setResult(
+                    "fieldResult",
+                    analysis.field_type
+                );
+
+
+                setResult(
+                    "confidenceResult",
+                    analysis.confidence
+                );
+
+
+                setResult(
+                    "irrigationResult",
+                    analysis.irrigation_advice
+                );
+
+
+                setResult(
+                    "problemResult",
+                    analysis.possible_disease_or_problem
+                );
+
+
+                setResult(
+                    "symptomsResult",
+                    analysis.symptoms
+                );
+
+
+                setResult(
+                    "actionsResult",
+                    analysis.immediate_actions
+                );
+
+
+                setResult(
+                    "fertilizerResult",
+                    analysis.fertilizer_guidance
+                );
+
+
+                setResult(
+                    "cautionResult",
+                    analysis.caution
+                );
+
+
+                loading.style.display =
+                    "none";
+
+
+                results.style.display =
+                    "block";
+
+
+                status.textContent =
+                    "✅ AI analysis completed.";
+
+
+                results.scrollIntoView({
+                    behavior: "smooth"
+                });
+
+            }
+
+
+            catch (error) {
+
+                console.error(error);
+
+
+                loading.style.display =
+                    "none";
+
+
+                status.textContent =
+                    "❌ Analysis failed.";
+
+
+                alert(
+                    error.message ||
+                    "Unable to analyze the image."
+                );
+
+            }
+
+
+            finally {
+
+                analyzeBtn.disabled =
+                    false;
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
