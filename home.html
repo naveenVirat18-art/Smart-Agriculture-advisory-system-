@@ -108,6 +108,26 @@
       font-size: 18px;
     }
 
+    /* LOGOUT BUTTON */
+    .logout-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin-top: 22px;
+      border: none;
+      border-radius: 12px;
+      background: #b71c1c;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .logout-btn:active {
+      transform: scale(.97);
+      background: #8e0000;
+    }
+
     .footer {
       text-align: center;
       color: white;
@@ -239,6 +259,12 @@
     </div>
 
 
+    <!-- LOGOUT BUTTON -->
+    <button class="logout-btn" onclick="logoutUser()">
+      🚪 Logout
+    </button>
+
+
     <div class="footer">
       Smart Agriculture © 2026
     </div>
@@ -256,6 +282,18 @@
 
       document.getElementById("welcomeName").textContent =
         "Welcome, " + farmerName;
+
+    }
+
+
+    // Logout
+    function logoutUser() {
+
+      localStorage.removeItem("farmerLoggedIn");
+
+      localStorage.removeItem("farmerName");
+
+      window.location.href = "index.html";
 
     }
 
